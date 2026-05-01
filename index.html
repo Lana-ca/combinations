@@ -1,187 +1,579 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>A Day in Three Parts</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&family=Crimson+Text:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Day in Words</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=Crimson+Text:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-    html, body {
-      width: 100%; height: 100%;
-      background: #050508;
-      color: #c0b8b0;
-      font-family: 'Crimson Text', Georgia, serif;
-    }
+:root {
+  --bg: #050508;
+  --ink: #e0d8d0;
+  --ink-mid: #9a9088;
+  --ink-dim: #504840;
+  --ink-faint: #1e1810;
+  --rust:   #c05040;
+  --green:  #4a9a3a;
+  --gray:   #848080;
+  --gold:   #c4a030;
+  --blue:   #4a6a9a;
+  --purple: #9a5aaa;
+}
 
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 40px 24px;
-    }
+html, body {
+  width: 100%; min-height: 100%;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Crimson Text', Georgia, serif;
+}
 
-    .eyebrow {
-      font-size: 0.7rem;
-      letter-spacing: 0.22em;
-      color: #504840;
-      text-transform: uppercase;
-      margin-bottom: 36px;
-    }
+canvas#bg {
+  position: fixed;
+  inset: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
 
-    h1 {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: clamp(2rem, 5vw, 3.2rem);
-      font-weight: 400;
-      font-style: italic;
-      color: #e0d8d0;
-      line-height: 1.2;
-      text-align: center;
-      margin-bottom: 24px;
-    }
+#app {
+  position: relative;
+  z-index: 1;
+}
 
-    .intro {
-      font-size: 1.05rem;
-      line-height: 1.85;
-      color: #807870;
-      font-style: italic;
-      text-align: center;
-      max-width: 440px;
-      margin-bottom: 56px;
-    }
+/* ── STAGES ── */
+.stage {
+  display: none;
+  min-height: 100vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 72px 28px;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.85s ease;
+}
+.stage.active { display: flex; }
+.stage.visible { opacity: 1; }
 
-    .steps {
-      display: flex;
-      align-items: flex-start;
-      justify-content: center;
-      gap: 0;
-      margin-bottom: 56px;
-      width: 100%;
-      max-width: 480px;
-    }
+.stage-tag {
+  font-size: 0.65rem;
+  letter-spacing: 0.24em;
+  color: var(--ink-dim);
+  text-transform: uppercase;
+  margin-bottom: 44px;
+}
 
-    .step {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-    }
+h1.title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--ink);
+  line-height: 1.2;
+  margin-bottom: 22px;
+}
 
-    .step-num {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.6rem;
-      font-style: italic;
-      color: #4a4038;
-      line-height: 1;
-    }
+.narr {
+  font-size: clamp(1rem, 2.2vw, 1.25rem);
+  line-height: 1.9;
+  color: var(--ink-mid);
+  font-style: italic;
+  max-width: 520px;
+  margin-bottom: 52px;
+}
 
-    .step-title {
-      font-size: 0.72rem;
-      letter-spacing: 0.14em;
-      color: #504840;
-      text-transform: uppercase;
-    }
+.prompt {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(0.82rem, 1.8vw, 1rem);
+  font-style: italic;
+  color: var(--ink-dim);
+  letter-spacing: 0.04em;
+  margin-bottom: 26px;
+}
 
-    .step-desc {
-      font-size: 0.82rem;
-      font-style: italic;
-      color: #3a3028;
-      text-align: center;
-      line-height: 1.5;
-      max-width: 110px;
-    }
+.choices {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+  width: 100%;
+}
 
-    .step-arrow {
-      padding-top: 6px;
-      color: #2a2018;
-      font-size: 1rem;
-      flex-shrink: 0;
-    }
+.choice {
+  font-family: 'Crimson Text', serif;
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--ink-mid);
+  background: transparent;
+  border: 1px solid var(--ink-faint);
+  padding: 11px 28px;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: background 0.18s, border-color 0.18s, color 0.18s;
+  max-width: 380px;
+  width: 100%;
+}
+.choice:hover {
+  background: #100d09;
+  border-color: var(--ink-dim);
+  color: var(--ink);
+}
 
-    .rule {
-      width: 1px;
-      height: 40px;
-      background: #1a1510;
-      margin: 0 auto 56px;
-    }
+.rule {
+  width: 1px;
+  height: 44px;
+  background: var(--ink-faint);
+  margin: 0 auto 44px;
+}
 
-    .begin-btn {
-      display: inline-block;
-      font-family: 'Crimson Text', serif;
-      font-size: 1rem;
-      font-style: italic;
-      color: #b0a898;
-      border: 1px solid #2a2018;
-      padding: 11px 36px;
-      text-decoration: none;
-      letter-spacing: 0.08em;
-      transition: background 0.2s, border-color 0.2s, color 0.2s;
-    }
+/* ── ANALYSIS STAGE ── */
+#stage-end {
+  justify-content: flex-start;
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
 
-    .begin-btn:hover {
-      background: #110e0a;
-      border-color: #6a5848;
-      color: #e0d8d0;
-    }
+.analysis-hed {
+  margin-bottom: 40px;
+  width: 100%;
+}
+.analysis-hed .stage-tag { margin-bottom: 16px; }
 
-    .portrait-wrap {
-      margin-top: 64px;
-      opacity: 0.18;
-    }
+#word-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  max-width: 600px;
+  margin: 0 auto 40px;
+}
+.pill {
+  font-size: 0.8rem;
+  font-style: italic;
+  padding: 4px 13px;
+  border-radius: 1px;
+}
 
-    .portrait-wrap img {
-      width: 80px;
-      height: 80px;
-      object-fit: cover;
-      border-radius: 50%;
-      filter: grayscale(1);
-    }
-  </style>
+#viz-wrap {
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto 32px;
+}
+#viz-svg { width: 100%; display: block; }
+
+#legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 18px;
+  justify-content: center;
+  max-width: 600px;
+  margin: 0 auto 44px;
+}
+.leg-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.72rem;
+  font-style: italic;
+  color: var(--ink-dim);
+}
+.leg-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.analysis-block {
+  max-width: 560px;
+  margin: 0 auto 48px;
+  border-left: 2px solid var(--ink-faint);
+  padding: 18px 22px;
+  text-align: left;
+}
+.analysis-block h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.9rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--ink-dim);
+  margin-bottom: 10px;
+}
+.analysis-block p {
+  font-size: 0.98rem;
+  color: var(--ink-mid);
+  font-style: italic;
+  line-height: 1.8;
+}
+
+.restart {
+  font-family: 'Crimson Text', serif;
+  font-size: 0.88rem;
+  font-style: italic;
+  color: var(--ink-dim);
+  background: transparent;
+  border: 1px solid var(--ink-faint);
+  padding: 9px 26px;
+  cursor: pointer;
+  letter-spacing: 0.06em;
+  transition: border-color 0.18s, color 0.18s;
+}
+.restart:hover { border-color: var(--ink-dim); color: var(--ink-mid); }
+
+#tip {
+  position: fixed;
+  pointer-events: none;
+  background: #0d0a07;
+  border: 1px solid var(--ink-faint);
+  padding: 6px 10px;
+  font-size: 0.78rem;
+  color: var(--ink-mid);
+  font-style: italic;
+  z-index: 900;
+  display: none;
+  line-height: 1.4;
+}
+#tip strong { font-style: normal; color: var(--ink); }
+</style>
 </head>
 <body>
 
-  <div class="eyebrow">An Interactive Essay in Three Parts</div>
+<canvas id="bg"></canvas>
 
-  <h1>A Day in Three Parts</h1>
+<div id="app">
 
-  <p class="intro">
-    Some days feel impossible to hold.<br>
-    This is a small guide through the overwhelm —<br>
-    a breath, and then a question about how we see.
-  </p>
+  <!-- OPENING -->
+  <section class="stage" id="stage-open">
+    <div class="stage-tag">An Essay on a Day</div>
+    <h1 class="title">A Day in Words</h1>
+    <p class="narr">
+      You wake up in the morning with another busy day ahead.<br>
+      Your life is starting to feel like a juggling act<br>of tasks and responsibilities.
+    </p>
+    <div class="rule"></div>
+    <button class="choice" onclick="go('stage-1')">Begin →</button>
+  </section>
 
-  <div class="steps">
-    <div class="step">
-      <div class="step-num">I.</div>
-      <div class="step-title">Overwhelm</div>
-      <div class="step-desc">a day that is too much</div>
+  <!-- CHOICE 1: Morning -->
+  <section class="stage" id="stage-1">
+    <div class="stage-tag">Morning</div>
+    <p class="prompt">Where do you want to focus your energy?</p>
+    <div class="choices">
+      <button class="choice" onclick="pick('work',   'stage-2-work'  )">Dive into work tasks</button>
+      <button class="choice" onclick="pick('school', 'stage-2-school')">Face your school assignments</button>
     </div>
-    <div class="step-arrow">→</div>
-    <div class="step">
-      <div class="step-num">II.</div>
-      <div class="step-title">Stillness</div>
-      <div class="step-desc">a moment to breathe</div>
+  </section>
+
+  <!-- CHOICE 2a: Work mid-morning -->
+  <section class="stage" id="stage-2-work">
+    <div class="stage-tag">Mid-Morning</div>
+    <p class="narr">You dive into work, each task clamoring for your attention.</p>
+    <p class="prompt">Should you —</p>
+    <div class="choices">
+      <button class="choice" onclick="pick('project', 'stage-3')">Work on the project</button>
+      <button class="choice" onclick="pick('emails',  'stage-3')">Handle the backed-up emails</button>
+      <button class="choice" onclick="pick('meeting', 'stage-3')">Prepare for the morning meeting</button>
     </div>
-    <div class="step-arrow">→</div>
-    <div class="step">
-      <div class="step-num">III.</div>
-      <div class="step-title">Perspective</div>
-      <div class="step-desc">what language does to the world</div>
+  </section>
+
+  <!-- CHOICE 2b: School mid-morning -->
+  <section class="stage" id="stage-2-school">
+    <div class="stage-tag">Mid-Morning</div>
+    <p class="narr">Assignments, readings, projects — you don't even know where to start.</p>
+    <p class="prompt">Should you —</p>
+    <div class="choices">
+      <button class="choice" onclick="pick('assignment', 'stage-3')">Work on the assignment</button>
+      <button class="choice" onclick="pick('reading',    'stage-3')">Catch up on the readings</button>
     </div>
-  </div>
+  </section>
 
-  <div class="rule"></div>
+  <!-- CHOICE 3: Evening -->
+  <section class="stage" id="stage-3">
+    <div class="stage-tag">Evening</div>
+    <p class="narr">
+      Just like that, the day went by so fast.<br>
+      It feels like you still have so much to do.
+    </p>
+    <p class="prompt">How does the day end?</p>
+    <div class="choices">
+      <button class="choice" onclick="pick('late',  'stage-end')">Push through — work into the night</button>
+      <button class="choice" onclick="pick('rest',  'stage-end')">Let yourself rest early</button>
+      <button class="choice" onclick="pick('cook',  'stage-end')">Put on music and make dinner</button>
+    </div>
+  </section>
 
-  <a href="New new (1)-1.html" class="begin-btn">Begin →</a>
+  <!-- ANALYSIS -->
+  <section class="stage" id="stage-end">
+    <div class="analysis-hed">
+      <div class="stage-tag">The day has settled</div>
+      <h1 class="title" style="font-size:clamp(1.6rem,4vw,2.4rem); margin-bottom:10px;">Your Vocabulary</h1>
+      <p style="font-size:0.88rem;font-style:italic;color:var(--ink-dim);">
+        What the words you chose reveal about how you describe your own experience
+      </p>
+    </div>
 
-  <div class="portrait-wrap">
-    <img src="self portrait.png" alt="">
-  </div>
+    <div id="word-pills"></div>
+    <div id="viz-wrap"><svg id="viz-svg" height="320"></svg></div>
+    <div id="legend"></div>
+    <div class="analysis-block" id="analysis-note"></div>
+    <button class="restart" onclick="restart()">Begin again →</button>
+  </section>
 
+</div>
+
+<div id="tip"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script>
+
+// ── BREATHING BACKGROUND ─────────────────────────────────────────────
+const canvas = document.getElementById('bg');
+const ctx    = canvas.getContext('2d');
+let bPhase = 0, bTime = 0, bLast = null;
+const B_DUR = 4; // seconds per phase
+
+function resize() { canvas.width = innerWidth; canvas.height = innerHeight; }
+resize();
+addEventListener('resize', resize);
+
+function ease(t) { return t < 0.5 ? 2*t*t : -1+(4-2*t)*t; }
+
+function drawBg(ts) {
+  if (!bLast) bLast = ts;
+  const dt = Math.min((ts - bLast)/1000, 0.1);
+  bLast = ts;
+  bTime += dt;
+  if (bTime >= B_DUR) { bTime -= B_DUR; bPhase = (bPhase+1)%4; }
+
+  const t  = bTime / B_DUR;
+  const W  = canvas.width, H = canvas.height;
+  const base = Math.min(W, H);
+  const minR = base * 0.10, maxR = base * 0.22;
+
+  let r;
+  if      (bPhase===0) r = minR + (maxR-minR)*ease(t);
+  else if (bPhase===1) r = maxR;
+  else if (bPhase===2) r = maxR - (maxR-minR)*ease(t);
+  else                 r = minR;
+
+  // More visible on open/end stages, subtle during narrative
+  const onEdge = (activeStage==='stage-open' || activeStage==='stage-end');
+  const a = onEdge ? 0.13 : 0.06;
+
+  ctx.clearRect(0,0,W,H);
+  for (let i=7; i>=1; i--) {
+    ctx.beginPath();
+    ctx.arc(W/2, H/2, r + i*base*0.025, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(100,120,160,${((8-i)/8)*a*0.55})`;
+    ctx.fill();
+  }
+  ctx.beginPath();
+  ctx.arc(W/2, H/2, r, 0, Math.PI*2);
+  ctx.fillStyle  = `rgba(110,130,170,${a*0.55})`;
+  ctx.strokeStyle= `rgba(160,180,215,${a})`;
+  ctx.lineWidth  = 0.9;
+  ctx.fill(); ctx.stroke();
+
+  requestAnimationFrame(drawBg);
+}
+requestAnimationFrame(drawBg);
+
+
+// ── DATA ─────────────────────────────────────────────────────────────
+const CLUSTERS = {
+  power:     { label:'Power & Drive',       color:'#c05040' },
+  virtue:    { label:'Virtue & Character',  color:'#4a9a3a' },
+  vice:      { label:'Pressure & Strain',   color:'#848080' },
+  abundance: { label:'Output & Richness',   color:'#c4a030' },
+  scale:     { label:'Scale & Distance',    color:'#4a6a9a' },
+  aesthetic: { label:'Presence & Feeling',  color:'#9a5aaa' },
+};
+
+// Each choice maps to 3 words with cluster tags
+const WORDS = {
+  work:       [{w:'driven',      c:'power'    }, {w:'productive',  c:'abundance'}, {w:'pressured',   c:'vice'     }],
+  school:     [{w:'diligent',    c:'virtue'   }, {w:'ambitious',   c:'power'    }, {w:'scattered',   c:'vice'     }],
+  project:    [{w:'focused',     c:'power'    }, {w:'creative',    c:'aesthetic'}, {w:'absorbed',    c:'scale'    }],
+  emails:     [{w:'responsive',  c:'virtue'   }, {w:'frantic',     c:'vice'     }, {w:'persistent',  c:'power'    }],
+  meeting:    [{w:'composed',    c:'virtue'   }, {w:'prepared',    c:'virtue'   }, {w:'vigilant',    c:'power'    }],
+  assignment: [{w:'faithful',    c:'virtue'   }, {w:'anxious',     c:'vice'     }, {w:'committed',   c:'virtue'   }],
+  reading:    [{w:'curious',     c:'aesthetic'}, {w:'thoughtful',  c:'virtue'   }, {w:'distant',     c:'scale'    }],
+  late:       [{w:'relentless',  c:'power'    }, {w:'exhausted',   c:'vice'     }, {w:'accomplished',c:'abundance'}],
+  rest:       [{w:'wise',        c:'virtue'   }, {w:'gentle',      c:'virtue'   }, {w:'aware',       c:'virtue'   }],
+  cook:       [{w:'grounded',    c:'aesthetic'}, {w:'present',     c:'virtue'   }, {w:'released',    c:'aesthetic'}],
+};
+
+const NOTES = {
+  power: {
+    h: 'The vocabulary of power',
+    p: 'Your day is described in the language of force and agency — driven, focused, relentless. Marco Polo used the same vocabulary for rulers and conquerors. When we apply it to ourselves, we reveal how we understand effort: as a kind of dominance over the day, over distraction, over our own limits. What a name does not receive is equally telling. To not be described as powerful, in this vocabulary, is to have failed.'
+  },
+  virtue: {
+    h: 'The vocabulary of virtue',
+    p: 'You narrated your day through character — faithful, wise, composed, gentle. This is the vocabulary Marco Polo reserved for Christian rulers and loyal companions. Applied to a Tuesday, it suggests that how you spent your hours carries moral weight: that a good day and a good person are the same claim. The distinction is not neutral. It means your rest is as much a moral act as your productivity.'
+  },
+  vice: {
+    h: 'The vocabulary of strain',
+    p: 'Scattered, frantic, pressured, exhausted — the words that attach to your day are words Marco Polo attached to adversaries and fallen places. Their presence here is not a judgment. It is a map of where the day put its pressure on you, and what language you reached for when it did. In his text, vice clustered around people, never landscapes. Difficulty was personalized. Your day\'s language does the same thing to yourself.'
+  },
+  abundance: {
+    h: 'The vocabulary of abundance',
+    p: 'Productive, creative, accomplished — your day\'s vocabulary clusters around output and richness. Marco Polo used these words for great trading cities, for places worth the journey. You used them for a single day\'s work. The implication is that a day\'s worth is measured in what it produced — that you are, as he was, a traveler assessing the value of a port before deciding whether to stay.'
+  },
+  scale: {
+    h: 'The vocabulary of scale',
+    p: 'Absorbed, distant, vast — your day\'s language reaches for size and depth. In Marco Polo, scale described kingdoms and wilderness: territories that dwarfed the traveler. When you use these words for your own experience, you are describing yourself as someone inside something large, not someone in control of it. Scale, in his text, was always the precondition for awe. Here it is the precondition for feeling lost.'
+  },
+  aesthetic: {
+    h: 'The vocabulary of presence',
+    p: 'Curious, grounded, present, released — your day ends in felt experience rather than measurable output. Marco Polo\'s aesthetic vocabulary appeared in descriptions of beauty and strangeness, things that arrested the traveler\'s motion. Your day, at least in how you told it, ends the same way: by stopping long enough to notice. In his text, these were the words attached to places that made him linger. You lingered too.'
+  },
+};
+
+
+// ── STATE ─────────────────────────────────────────────────────────────
+let activeStage = 'stage-open';
+let collected   = [];  // [{w, c}, ...]
+
+function go(id) {
+  const prev = document.getElementById(activeStage);
+  if (prev) { prev.classList.remove('visible'); }
+
+  activeStage = id;
+  const el = document.getElementById(id);
+  el.style.display = 'flex';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  setTimeout(() => el.classList.add('visible'), 30);
+
+  if (prev) {
+    setTimeout(() => {
+      prev.classList.remove('active');
+      prev.style.display = 'none';
+    }, 880);
+  }
+  el.classList.add('active');
+}
+
+function pick(key, next) {
+  const words = WORDS[key] || [];
+  collected = collected.concat(words);
+  if (next === 'stage-end') buildAnalysis();
+  go(next);
+}
+
+function restart() {
+  collected = [];
+  go('stage-open');
+}
+
+
+// ── ANALYSIS ─────────────────────────────────────────────────────────
+function buildAnalysis() {
+  // Word pills
+  const pillWrap = document.getElementById('word-pills');
+  pillWrap.innerHTML = '';
+  collected.forEach(({w, c}) => {
+    const col = CLUSTERS[c].color;
+    const span = document.createElement('span');
+    span.className = 'pill';
+    span.textContent = w;
+    span.style.cssText = `background:${col}1a; color:${col}; border:1px solid ${col}33;`;
+    pillWrap.appendChild(span);
+  });
+
+  // Legend — only clusters present
+  const present = [...new Set(collected.map(d => d.c))];
+  document.getElementById('legend').innerHTML = present.map(c =>
+    `<div class="leg-item">
+      <div class="leg-dot" style="background:${CLUSTERS[c].color};"></div>
+      ${CLUSTERS[c].label}
+    </div>`
+  ).join('');
+
+  // Dominant cluster for analysis note
+  const counts = {};
+  collected.forEach(({c}) => counts[c] = (counts[c]||0) + 1);
+  const dominant = Object.entries(counts).sort((a,b)=>b[1]-a[1])[0][0];
+  const note = NOTES[dominant];
+  document.getElementById('analysis-note').innerHTML =
+    `<h3>${note.h}</h3><p>${note.p}</p>`;
+
+  // D3
+  renderViz();
+}
+
+function renderViz() {
+  const svg = d3.select('#viz-svg');
+  svg.selectAll('*').remove();
+
+  const W = document.getElementById('viz-wrap').clientWidth || 600;
+  const H = 320;
+  svg.attr('viewBox', `0 0 ${W} ${H}`).attr('width', W).attr('height', H);
+
+  const nodes = collected.map((d, i) => ({ ...d, r: 36, id: d.w + i }));
+  const tip   = document.getElementById('tip');
+
+  const sim = d3.forceSimulation(nodes)
+    .force('center',    d3.forceCenter(W/2, H/2).strength(0.06))
+    .force('charge',    d3.forceManyBody().strength(-10))
+    .force('collision', d3.forceCollide(d => d.r + 5).strength(0.88))
+    .alphaDecay(0.02);
+
+  const node = svg.selectAll('.n').data(nodes, d => d.id)
+    .join(enter => {
+      const g = enter.append('g').attr('opacity', 0);
+
+      g.append('circle')
+        .attr('r',            d => d.r)
+        .attr('fill',         d => CLUSTERS[d.c].color + '1a')
+        .attr('stroke',       d => CLUSTERS[d.c].color)
+        .attr('stroke-width', 0.9)
+        .attr('stroke-opacity', 0.75);
+
+      g.append('text')
+        .attr('text-anchor', 'middle').attr('dy', '0.35em')
+        .attr('font-size',   d => Math.max(9, Math.min(d.r*0.38, 13)))
+        .attr('fill',        d => CLUSTERS[d.c].color)
+        .attr('font-family', "'Crimson Text', serif")
+        .attr('font-style',  'italic')
+        .attr('pointer-events', 'none')
+        .text(d => d.w);
+
+      g.on('mouseenter', (e, d) => {
+          tip.style.display = 'block';
+          tip.style.left    = (e.clientX + 14) + 'px';
+          tip.style.top     = (e.clientY - 8)  + 'px';
+          tip.innerHTML     = `<strong>${d.w}</strong><br>${CLUSTERS[d.c].label}`;
+          d3.select(e.currentTarget).select('circle')
+            .attr('fill', CLUSTERS[d.c].color + '33');
+        })
+        .on('mouseleave', (e, d) => {
+          tip.style.display = 'none';
+          d3.select(e.currentTarget).select('circle')
+            .attr('fill', CLUSTERS[d.c].color + '1a');
+        });
+
+      g.transition().duration(500).delay((_,i) => i*55).attr('opacity',1);
+      return g;
+    });
+
+  sim.on('tick', () => {
+    node.attr('transform', d => {
+      const x = Math.max(d.r+3, Math.min(W-d.r-3, d.x));
+      const y = Math.max(d.r+3, Math.min(H-d.r-3, d.y));
+      return `translate(${x},${y})`;
+    });
+  });
+}
+
+addEventListener('resize', () => {
+  if (activeStage === 'stage-end') renderViz();
+});
+
+// ── INIT ─────────────────────────────────────────────────────────────
+go('stage-open');
+</script>
 </body>
 </html>
