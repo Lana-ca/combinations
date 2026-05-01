@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What's in a Name — The Travels of Marco Polo</title>
+<meta name="description" content="A linguistic analysis of names and their adjectives in The Travels of Marco Polo. How does language construct authority, abundance, and moral character?">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Crimson+Text:ital,wght@0,400;0,600;1,400;1,600&family=IM+Fell+English+SC&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --parchment: #F4EDD8;
+  --parchment-dark: #E8D9B5;
+  --parchment-mid: #EEE2C4;
+  --cream: #FAF7EF;
+  --ink: #2A1A0C;
+  --ink-mid: #4A3020;
+  --ink-light: #7A5C3A;
+  --rust: #8B3A1A;
+  --rust-light: #B85A35;
+  --rust-pale: #F2DDD5;
+  --gold: #9A7210;
+  --gold-light: #C49A30;
+  --gold-pale: #F5EDD0;
+  --forest: #2A5220;
+  --forest-light: #4A7A3A;
+  --forest-pale: #D5E8CE;
+  --slate: #3A4A5A;
+  --slate-light: #6A7A8A;
+  --slate-pale: #D5E0E8;
+  --ink-pale: #E0D8CE;
+  --border: rgba(42,26,12,0.14);
+  --border-strong: rgba(42,26,12,0.28);
+}
+
+html { font-size: 16px; }
+
+body {
+  background: var(--parchment);
+  color: var(--ink);
+  font-family: 'Crimson Text', Georgia, serif;
+  font-size: 17px;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+/* ── DECORATIVE BORDER ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 10px;
+  border: 1.5px solid var(--border-strong);
+  pointer-events: none;
+  z-index: 1000;
+}
+
+/* ── HEADER ── */
+header {
+  padding: 60px 60px 40px;
+  border-bottom: 1px solid var(--border-strong);
+  position: relative;
+  background: var(--cream);
+}
+
+.header-ornament {
+  text-align: center;
+  font-family: 'IM Fell English SC', serif;
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  color: var(--ink-light);
+  margin-bottom: 18px;
+}
+
+header h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2rem, 5vw, 3.8rem);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.15;
+  color: var(--ink);
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+header h1 em {
+  font-style: normal;
+  color: var(--rust);
+}
+
+.header-subtitle {
+  text-align: center;
+  font-family: 'Crimson Text', serif;
+  font-size: 1.1rem;
+  font-style: italic;
+  color: var(--ink-light);
+  margin-bottom: 24px;
+}
+
+.header-rule {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 500px;
+  margin: 0 auto 24px;
+}
+.header-rule::before,
+.header-rule::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border-strong);
+}
+.header-rule-diamond {
+  width: 6px; height: 6px;
+  background: var(--rust);
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
+
+.header-intro {
+  max-width: 680px;
+  margin: 0 auto;
+  text-align: center;
+  font-size: 1.05rem;
+  color: var(--ink-mid);
+  line-height: 1.75;
+}
+
+.source-note {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 0.78rem;
+  font-family: 'Crimson Text', serif;
+  color: var(--ink-light);
+  letter-spacing: 0.04em;
+}
+
+/* ── MAIN LAYOUT ── */
+main { max-width: 1200px; margin: 0 auto; padding: 0 40px 80px; }
+
+/* ── SECTION HEADS ── */
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 50px 0 8px;
+}
+.section-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem;
+  font-style: italic;
+  color: var(--rust);
+  line-height: 1;
+  flex-shrink: 0;
+}
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.45rem;
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1.25;
+}
+.section-desc {
+  font-size: 1rem;
+  color: var(--ink-light);
+  font-style: italic;
+  max-width: 700px;
+  margin-bottom: 22px;
+  line-height: 1.6;
+}
+
+/* ── PANELS ── */
+.panel {
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 24px 28px;
+}
+
+/* ── FILTER BAR ── */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.filter-bar label {
+  font-size: 0.8rem;
+  font-family: 'Crimson Text', serif;
+  font-style: italic;
+  color: var(--ink-light);
+  letter-spacing: 0.04em;
+}
+.filter-btn {
+  font-family: 'Crimson Text', serif;
+  font-size: 0.85rem;
+  padding: 3px 14px;
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--ink-mid);
+  cursor: pointer;
+  transition: all 0.15s;
+  border-radius: 1px;
+}
+.filter-btn:hover { background: var(--parchment); }
+.filter-btn.active {
+  background: var(--ink);
+  color: var(--parchment);
+  border-color: var(--ink);
+}
+.search-input {
+  margin-left: auto;
+  font-family: 'Crimson Text', serif;
+  font-size: 0.9rem;
+  padding: 3px 10px;
+  border: 1px solid var(--border-strong);
+  background: var(--parchment);
+  color: var(--ink);
+  width: 150px;
+  border-radius: 1px;
+  outline: none;
+}
+.search-input:focus { border-color: var(--rust); }
+.search-input::placeholder { color: var(--ink-light); font-style: italic; }
+
+/* ── VIZ AREA ── */
+.viz-wrap {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+.svg-wrap {
+  flex: 1;
+  background: var(--parchment-mid);
+  border: 1px solid var(--border);
+  position: relative;
+  min-height: 460px;
+  border-radius: 2px;
+}
+#viz-svg { display: block; width: 100%; }
+
+.detail-col {
+  width: 200px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.detail-box {
+  background: var(--parchment-mid);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 14px;
+  min-height: 260px;
+}
+#detail-placeholder {
+  margin-top: 40px;
+  text-align: center;
+}
+.detail-icon {
+  font-size: 28px;
+  opacity: 0.2;
+  margin-bottom: 10px;
+  font-family: serif;
+}
+#detail-placeholder p {
+  font-size: 0.8rem;
+  color: var(--ink-light);
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.stat-card {
+  background: var(--parchment-mid);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 10px 14px;
+}
+.stat-label {
+  font-size: 0.72rem;
+  color: var(--ink-light);
+  font-style: italic;
+  margin-bottom: 1px;
+}
+.stat-val {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1;
+}
+
+.legend {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 0.78rem;
+  color: var(--ink-mid);
+  font-style: italic;
+}
+.legend-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.legend-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* tooltip */
+#tooltip {
+  display: none;
+  position: fixed;
+  pointer-events: none;
+  background: var(--cream);
+  border: 1px solid var(--border-strong);
+  padding: 7px 11px;
+  font-size: 0.82rem;
+  color: var(--ink-mid);
+  max-width: 170px;
+  z-index: 500;
+  line-height: 1.4;
+  font-style: italic;
+  box-shadow: 2px 2px 8px rgba(42,26,12,0.1);
+}
+#tooltip strong { font-style: normal; color: var(--ink); font-size: 0.88rem; }
+
+/* ── CLUSTER SECTION ── */
+.cluster-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+@media (max-width: 700px) { .cluster-grid { grid-template-columns: repeat(2, 1fr); } }
+
+.cluster-card {
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 11px 13px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.cluster-card:hover { background: var(--parchment); }
+.cluster-card.selected { border-width: 2px; }
+.cluster-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+.cluster-count {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 400;
+  line-height: 1;
+  color: var(--ink);
+}
+.cluster-sub { font-size: 0.72rem; color: var(--ink-light); font-style: italic; margin-bottom: 7px; }
+.cluster-pills { display: flex; flex-wrap: wrap; gap: 3px; }
+.cluster-pill {
+  font-size: 0.68rem;
+  padding: 1px 6px;
+  border-radius: 1px;
+  font-style: italic;
+}
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+@media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
+
+.inner-panel {
+  background: var(--parchment-mid);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 14px 16px;
+}
+.inner-panel-title {
+  font-size: 0.78rem;
+  font-style: italic;
+  color: var(--ink-light);
+  margin-bottom: 12px;
+  letter-spacing: 0.03em;
+}
+
+/* Freq bars */
+.freq-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+.freq-word {
+  font-family: 'Crimson Text', serif;
+  font-size: 0.82rem;
+  font-style: italic;
+  color: var(--ink-mid);
+  min-width: 72px;
+  text-align: right;
+}
+.freq-track {
+  flex: 1;
+  height: 10px;
+  background: var(--parchment-dark);
+  border-radius: 1px;
+  overflow: hidden;
+}
+.freq-fill { height: 100%; border-radius: 1px; }
+.freq-count { font-size: 0.72rem; color: var(--ink-light); min-width: 20px; font-style: italic; }
+
+/* Heatmap */
+.heat-row { display: flex; align-items: center; gap: 2px; margin-bottom: 3px; }
+.heat-type-label {
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--ink-light);
+  min-width: 54px;
+  text-align: right;
+  padding-right: 8px;
+}
+.heat-cell {
+  flex: 1;
+  height: 22px;
+  border-radius: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 600;
+  font-family: 'Crimson Text', serif;
+  cursor: default;
+  transition: opacity 0.2s;
+}
+.heat-header-row { display: flex; align-items: center; gap: 2px; margin-bottom: 5px; }
+.heat-col-label {
+  flex: 1;
+  font-size: 0.63rem;
+  color: var(--ink-light);
+  text-align: center;
+  font-style: italic;
+  line-height: 1.2;
+}
+
+/* Detail panel */
+.detail-panel {
+  background: var(--parchment-mid);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  min-height: 80px;
+}
+.detail-panel-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.88rem;
+  font-style: italic;
+  margin-bottom: 10px;
+}
+.name-cards-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+.name-card {
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 7px 11px;
+  min-width: 130px;
+}
+.name-card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 2px;
+}
+.name-card-type {
+  font-size: 0.7rem;
+  font-style: italic;
+  margin-bottom: 5px;
+}
+.name-adj-pills { display: flex; flex-wrap: wrap; gap: 2px; }
+.name-adj-pill {
+  font-size: 0.65rem;
+  padding: 1px 5px;
+  border-radius: 1px;
+  font-style: italic;
+}
+
+/* ── BUTTONS ── */
+.action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+.action-btn {
+  font-family: 'Crimson Text', serif;
+  font-size: 0.85rem;
+  font-style: italic;
+  padding: 5px 14px;
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--ink-mid);
+  cursor: pointer;
+  transition: all 0.15s;
+  border-radius: 1px;
+  text-decoration: none;
+  display: inline-block;
+}
+.action-btn:hover { background: var(--ink); color: var(--parchment); border-color: var(--ink); }
+
+/* ── ANALYSIS SECTION ── */
+.analysis-block {
+  background: var(--cream);
+  border-left: 3px solid var(--rust);
+  padding: 20px 24px;
+  margin: 30px 0;
+  font-size: 1rem;
+  color: var(--ink-mid);
+  line-height: 1.75;
+}
+.analysis-block h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 500;
+  font-style: italic;
+  color: var(--rust);
+  margin-bottom: 6px;
+}
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border-strong);
+  padding: 28px 60px;
+  background: var(--cream);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.footer-left {
+  font-size: 0.82rem;
+  color: var(--ink-light);
+  font-style: italic;
+  line-height: 1.6;
+}
+.footer-left a { color: var(--rust); text-decoration: none; }
+.footer-left a:hover { text-decoration: underline; }
+.footer-right {
+  font-family: 'IM Fell English SC', serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  color: var(--ink-light);
+  text-align: right;
+}
+
+/* ── LOADING ── */
+.loading-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  background: var(--parchment-mid);
+  border-radius: 2px;
+  z-index: 10;
+}
+.dots-row { display: flex; gap: 6px; }
+.dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--ink-light);
+  animation: pulse 1.2s ease-in-out infinite;
+}
+.dot:nth-child(2) { animation-delay: 0.2s; }
+.dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes pulse {
+  0%,80%,100% { transform: scale(0.55); opacity: 0.35; }
+  40% { transform: scale(1); opacity: 1; }
+}
+.loading-text {
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--ink-light);
+  font-family: 'Crimson Text', serif;
+}
+
+@media (max-width: 700px) {
+  header, footer { padding: 40px 24px; }
+  main { padding: 0 20px 60px; }
+  .viz-wrap { flex-direction: column; }
+  .detail-col { width: 100%; flex-direction: row; flex-wrap: wrap; }
+  .detail-box { min-height: auto; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-ornament">A Linguistic Analysis ✦ Project Gutenberg Text #10636</div>
+  <h1>What's in a <em>Name</em></h1>
+  <p class="header-subtitle">The Travels of Marco Polo &amp; the Vocabulary of Power</p>
+  <div class="header-rule"><div class="header-rule-diamond"></div></div>
+  <p class="header-intro">
+    Marco Polo did not merely observe the world — he named it, and in naming it, described it.
+    This analysis maps the adjectives he attaches to persons, rulers, and places throughout his travels,
+    asking what patterns emerge when language becomes the instrument of empire.
+  </p>
+  <p class="source-note">
+    Source: <em>The Travels of Marco Polo</em>, Yule–Cordier Edition (1903) &bull; 
+    <a href="https://www.gutenberg.org/ebooks/10636" style="color:var(--rust);text-decoration:none;">Project Gutenberg #10636</a>
+  </p>
+</header>
+
+<main>
+
+  <!-- ── SECTION I: BUBBLE NETWORK ── -->
+  <div class="section-label">
+    <span class="section-num">I.</span>
+    <div>
+      <div class="section-title">Name × Adjective Network</div>
+    </div>
+  </div>
+  <p class="section-desc">
+    Each bubble represents a named entity in the text. Bubble size encodes the number of distinct adjectives Marco attaches to that name.
+    Click any bubble to expand its full descriptor cloud.
+  </p>
+
+  <div class="panel">
+    <div class="filter-bar">
+      <label>Filter by type:</label>
+      <button class="filter-btn active" data-filter="all" onclick="setFilter('all')">All</button>
+      <button class="filter-btn" data-filter="ruler" onclick="setFilter('ruler')">Rulers &amp; Khans</button>
+      <button class="filter-btn" data-filter="person" onclick="setFilter('person')">Persons</button>
+      <button class="filter-btn" data-filter="place" onclick="setFilter('place')">Places</button>
+      <input class="search-input" type="text" id="search" placeholder="Search names…" oninput="handleSearch(this.value)">
+    </div>
+
+    <div class="viz-wrap">
+      <div class="svg-wrap" id="chart-wrap">
+        <div class="loading-overlay" id="loading-overlay">
+          <div class="dots-row"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+          <div class="loading-text" id="load-msg">Unrolling the manuscript…</div>
+        </div>
+        <svg id="viz-svg" height="460" aria-label="Force-directed bubble chart of names and their adjectives in Marco Polo"></svg>
+      </div>
+
+      <div class="detail-col">
+        <div class="detail-box">
+          <div id="detail-placeholder">
+            <div class="detail-icon">◎</div>
+            <p>Click any bubble to see its full descriptor cloud</p>
+          </div>
+          <div id="detail-content" style="display:none;"></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Names analyzed</div>
+          <div class="stat-val" id="stat-names">—</div>
+          <div class="stat-label" style="margin-top:10px;">Unique descriptors</div>
+          <div class="stat-val" id="stat-adj">—</div>
+        </div>
+        <div class="legend">
+          <div class="legend-row"><div class="legend-dot" style="background:#8B3A1A;"></div>Ruler / Khan</div>
+          <div class="legend-row"><div class="legend-dot" style="background:#9A7210;"></div>Person</div>
+          <div class="legend-row"><div class="legend-dot" style="background:#2A5220;"></div>Place / Kingdom</div>
+          <div style="font-size:0.72rem;margin-top:4px;line-height:1.4;">Bubble size = number of distinct adjectives attached to the name</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Analysis note I -->
+  <div class="analysis-block">
+    <h3>A note on "great"</h3>
+    Marco's most-deployed adjective functions less as description than as a stamp of
+    legibility — an assurance to his European audience that whatever he is describing
+    can be ranked and accommodated within their existing framework of wonder.
+    What a name does <em>not</em> receive is equally telling: places Marco marks as desolate,
+    wild, or cold receive no "great" — they exist outside the economy of admiration.
+  </div>
+
+  <!-- ── SECTION II: SEMANTIC CLUSTERS ── -->
+  <div class="section-label">
+    <span class="section-num">II.</span>
+    <div>
+      <div class="section-title">The Architecture of Description</div>
+    </div>
+  </div>
+  <p class="section-desc">
+    Marco's adjectives are not random — they cluster into six ideological vocabularies.
+    Click any cluster to see which names it dominates and why that dominance matters.
+  </p>
+
+  <div class="panel">
+    <div class="cluster-grid" id="cluster-cards"></div>
+
+    <div class="two-col">
+      <div class="inner-panel">
+        <div class="inner-panel-title">Top adjectives by frequency across all names</div>
+        <div id="freq-bars"></div>
+      </div>
+      <div class="inner-panel">
+        <div class="inner-panel-title">Cluster weight by name type</div>
+        <div id="heatmap-header" class="heat-header-row">
+          <div style="min-width:62px;"></div>
+        </div>
+        <div id="heatmap"></div>
+      </div>
+    </div>
+
+    <div class="detail-panel" id="cluster-detail-panel">
+      <div style="font-size:0.85rem;font-style:italic;color:var(--ink-light);">
+        Click a cluster above to see which names anchor it
+      </div>
+    </div>
+
+    <div class="action-buttons">
+      <a class="action-btn" href="https://www.gutenberg.org/ebooks/10636" target="_blank">Read the full text ↗</a>
+    </div>
+  </div>
+
+  <!-- Analysis note II -->
+  <div class="analysis-block">
+    <h3>Moral asymmetry: persons vs. places</h3>
+    Vice and corruption in Marco's vocabulary attach almost exclusively to <em>persons</em>,
+    never to landscapes. Places are barren, desolate, or wild — conditions that invite
+    civilizing intervention — but only people are treacherous, wicked, or false.
+    This asymmetry is not neutral: moral failure is personalized and thus punishable,
+    while geographic difficulty is naturalized and thus conquerable.
+    The distinction maps precisely onto who receives military attention in the text.
+  </div>
+
+  <div class="analysis-block">
+    <h3>Christian rulers and the virtue cluster</h3>
+    Names Marco identifies as Christian — Prester John, Abaga, Argon, Bayan, Nayan
+    (even in rebellion) — cluster disproportionately in the Virtue &amp; Morality column.
+    Non-Christian administrators, most pointedly Ahmad, are assigned the vice cluster
+    in near totality. Whether or not this reflects observed behavior, it reflects
+    a linguistic system in which religious identity precedes and conditions description.
+    The name comes first; the adjective follows from what the name already means.
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-left">
+    Text: <em>The Travels of Marco Polo</em>, Yule–Cordier Edition, 1903 &bull;
+    <a href="https://www.gutenberg.org/ebooks/10636">Project Gutenberg #10636</a><br>
+    Analysis built with D3.js &bull; Data curated from the full text of Volume I
+  </div>
+  <div class="footer-right">What's in a Name<br>Marco Polo · 1271–1295</div>
+</footer>
+
+<div id="tooltip"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script>
+// ── DATA ──
+const ALL_DATA = [
+  {name:"Kublai Khan",type:"ruler",adjectives:["great","powerful","mighty","benevolent","wise","noble","magnificent","valiant","prudent","liberal","supreme","vast","glorious","illustrious","famed"]},
+  {name:"Chinghis Khan",type:"ruler",adjectives:["great","mighty","valiant","bold","supreme","powerful","warlike","fierce","glorious","famed","terrible"]},
+  {name:"Prester John",type:"ruler",adjectives:["great","noble","Christian","powerful","sovereign","illustrious","proud","mighty","famed"]},
+  {name:"Bayan",type:"ruler",adjectives:["good","brave","wise","valiant","able","faithful","noble","illustrious","hundred-eyed"]},
+  {name:"Nayan",type:"ruler",adjectives:["great","Christian","powerful","rebellious","base","treacherous","wicked","mighty"]},
+  {name:"Hulagu",type:"ruler",adjectives:["great","mighty","powerful","noble","warlike","fierce"]},
+  {name:"Abaga",type:"ruler",adjectives:["great","noble","Christian","valiant","worthy","wise"]},
+  {name:"Ahmad",type:"ruler",adjectives:["treacherous","wicked","corrupt","false","evil","base","licentious","vile"]},
+  {name:"Argon",type:"ruler",adjectives:["valiant","good","noble","Christian","worthy","wise","prudent"]},
+  {name:"Timur",type:"ruler",adjectives:["able","worthy","good","brave","noble","valiant","prudent"]},
+  {name:"Kaidu",type:"ruler",adjectives:["great","powerful","valiant","mighty","bold","brave","warlike"]},
+  {name:"Abaka",type:"ruler",adjectives:["great","noble","Christian","powerful","valiant"]},
+  {name:"Marco Polo",type:"person",adjectives:["young","observant","trustworthy","clever","worthy","industrious","favoured","wise","prudent","discreet","faithful"]},
+  {name:"Nicolo Polo",type:"person",adjectives:["venerable","wise","experienced","worthy","prudent","noble","faithful","distinguished"]},
+  {name:"Maffeo Polo",type:"person",adjectives:["prudent","worthy","discreet","wise","faithful","venerable","noble"]},
+  {name:"Henry Yule",type:"person",adjectives:["great","learned","illustrious","indefatigable","distinguished","eminent","devoted","remarkable","admirable"]},
+  {name:"Henri Cordier",type:"person",adjectives:["learned","distinguished","loyal","diligent","devoted","indefatigable","worthy","eminent"]},
+  {name:"Kokachin",type:"person",adjectives:["noble","fair","young","royal","beautiful","gentle","sweet","virtuous","amiable"]},
+  {name:"Rusticiano",type:"person",adjectives:["learned","worthy","clever","faithful"]},
+  {name:"Cathay",type:"place",adjectives:["great","vast","rich","magnificent","splendid","noble","populous","fertile","prosperous","wide","large","ancient"]},
+  {name:"Kinsay",type:"place",adjectives:["noble","great","magnificent","splendid","rich","fine","vast","prosperous","populous","beautiful","greatest","noblest","wondrous","ancient","celebrated"]},
+  {name:"Cambaluc",type:"place",adjectives:["great","noble","vast","magnificent","finest","wealthy","populous","splendid","rich","fine","ancient","celebrated"]},
+  {name:"Cipangu",type:"place",adjectives:["great","independent","rich","vast","golden","wondrous","remote","fertile","noble","fine"]},
+  {name:"Venice",type:"place",adjectives:["noble","great","fair","rich","proud","beautiful","magnificent","ancient","celebrated"]},
+  {name:"Persia",type:"place",adjectives:["great","noble","fine","ancient","vast","fertile","warm","cultivated","celebrated"]},
+  {name:"Tartary",type:"place",adjectives:["great","vast","cold","wide","barren","desolate","wild","bleak","remote"]},
+  {name:"Mangi",type:"place",adjectives:["great","vast","noble","rich","fine","magnificent","fertile","populous","prosperous","celebrated"]},
+  {name:"India",type:"place",adjectives:["great","noble","vast","fine","warm","fertile","wondrous","populous","rich","ancient","celebrated"]},
+  {name:"Xanadu",type:"place",adjectives:["noble","great","wondrous","fine","magnificent","beautiful","splendid","vast","fertile","celebrated"]},
+  {name:"Zaiton",type:"place",adjectives:["great","noble","rich","magnificent","finest","trading","vast","populous","prosperous","celebrated"]},
+  {name:"Tibet",type:"place",adjectives:["vast","desolate","mountainous","wild","cold","remote","barren","wide","bleak","desolate"]},
+  {name:"Malabar",type:"place",adjectives:["great","fine","noble","warm","fertile","rich","populous","prosperous","ancient"]},
+  {name:"Ceylon",type:"place",adjectives:["noble","fine","great","rich","fertile","beautiful","ancient","wondrous","independent"]},
+  {name:"Hormuz",type:"place",adjectives:["great","hot","fine","rich","trading","maritime","prosperous","noble"]},
+  {name:"Badakhshan",type:"place",adjectives:["noble","independent","fine","mountainous","cold","rich","vast","remote","ancient"]},
+  {name:"Kashmir",type:"place",adjectives:["fine","noble","mountainous","warm","fertile","ancient","wondrous","remote"]},
+  {name:"Aden",type:"place",adjectives:["great","noble","rich","fine","maritime","trading","prosperous","ancient"]},
+  {name:"Karakorum",type:"place",adjectives:["great","ancient","noble","former","celebrated","vast"]},
+  {name:"Yunnan",type:"place",adjectives:["great","vast","noble","fine","wild","remote","fertile"]},
+  {name:"Tenduk",type:"place",adjectives:["noble","Christian","ancient","fine","independent"]},
+];
+
+const CLUSTERS = [
+  { id:"power", label:"Power & Authority",
+    words:["great","mighty","powerful","supreme","sovereign","glorious","illustrious","noble","famed","independent","proud","valiant","bold","warlike","fierce","dominant","terrible","celebrated"],
+    color:"#8B3A1A", bg:"#F2DDD5", txt:"#6A2A12" },
+  { id:"virtue", label:"Virtue & Morality",
+    words:["good","wise","prudent","faithful","loyal","worthy","benevolent","liberal","honest","devout","Christian","virtuous","just","gentle","discreet","trustworthy","able"],
+    color:"#2A5220", bg:"#D5E8CE", txt:"#1E3A17" },
+  { id:"dark", label:"Vice & Corruption",
+    words:["treacherous","wicked","corrupt","false","evil","base","licentious","rebellious","cruel","savage","fierce","idolatrous","vile","barbarous"],
+    color:"#4A4A4A", bg:"#E0D8CE", txt:"#2C2C2C" },
+  { id:"abundance", label:"Wealth & Abundance",
+    words:["rich","wealthy","prosperous","fine","magnificent","splendid","golden","fertile","cultivated","populous","trading","maritime","productive","celebrated","ancient"],
+    color:"#9A7210", bg:"#F5EDD0", txt:"#6A4E08" },
+  { id:"scale", label:"Scale & Scope",
+    words:["vast","great","large","wide","immense","enormous","extensive","ancient","remote","long","broad","boundless","deep","former"],
+    color:"#2A4A6A", bg:"#D5E0E8", txt:"#1A2E42" },
+  { id:"aesthetic", label:"Aesthetic & Sensory",
+    words:["beautiful","fair","magnificent","splendid","wondrous","fine","noble","sweet","bright","hot","cold","warm","barren","wild","bleak","mountainous","desolate","golden"],
+    color:"#6A3A8A", bg:"#EDE5F5", txt:"#4A2262" },
+];
+
+let allData = JSON.parse(JSON.stringify(ALL_DATA));
+let filteredData = [...allData];
+let currentFilter = 'all';
+let simulation = null;
+let selectedName = null;
+let selectedCluster = null;
+
+// ── STATS ──
+function updateStats() {
+  document.getElementById('stat-names').textContent = allData.length;
+  const uniq = new Set(allData.flatMap(d => d.adjectives)).size;
+  document.getElementById('stat-adj').textContent = uniq;
+}
+
+// ── FILTER ──
+function setFilter(f) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === f));
+  applyFilter();
+}
+function handleSearch(val) { applyFilter(val); }
+function applyFilter(searchVal) {
+  const q = (searchVal !== undefined ? searchVal : document.getElementById('search').value).toLowerCase().trim();
+  filteredData = allData.filter(d => {
+    const typeOk = currentFilter === 'all' || d.type === currentFilter;
+    const nameOk = !q || d.name.toLowerCase().includes(q);
+    return typeOk && nameOk;
+  });
+  renderViz(filteredData);
+}
+
+// ── COLOUR MAP ──
+const TYPE_COLOR = { ruler: '#8B3A1A', person: '#9A7210', place: '#2A5220' };
+const TYPE_FILL  = { ruler: '#C06040', person: '#C49A30', place: '#4A8A3A' };
+const TYPE_LABEL = { ruler: 'Ruler / Khan', person: 'Person', place: 'Place / Kingdom' };
+const TYPE_BG    = { ruler: '#F2DDD5', person: '#F5EDD0', place: '#D5E8CE' };
+const TYPE_TXT   = { ruler: '#6A2A12', person: '#6A4E08', place: '#1E3A17' };
+
+// ── VIZ ──
+function renderViz(data) {
+  const svg = d3.select('#viz-svg');
+  svg.selectAll('*').remove();
+  const wrap = document.getElementById('chart-wrap');
+  const W = wrap.clientWidth || 540;
+  const H = 460;
+  svg.attr('viewBox', `0 0 ${W} ${H}`).attr('width', W).attr('height', H);
+  if (!data.length) return;
+
+  const maxA = d3.max(data, d => d.adjectives.length);
+  const minA = d3.min(data, d => d.adjectives.length);
+  const rScale = d3.scaleSqrt().domain([minA, Math.max(maxA, minA + 1)]).range([15, 52]);
+  const nodes = data.map(d => ({ ...d, r: rScale(d.adjectives.length) }));
+
+  if (simulation) simulation.stop();
+  simulation = d3.forceSimulation(nodes)
+    .force('center', d3.forceCenter(W / 2, H / 2).strength(0.04))
+    .force('charge', d3.forceManyBody().strength(-15))
+    .force('collision', d3.forceCollide(d => d.r + 3.5).strength(0.85))
+    .alphaDecay(0.018);
+
+  const tooltip = document.getElementById('tooltip');
+
+  const node = svg.selectAll('.node').data(nodes, d => d.name)
+    .join(enter => {
+      const g = enter.append('g').attr('class', 'node').style('cursor', 'pointer').attr('opacity', 0);
+
+      g.append('circle')
+        .attr('r', d => d.r)
+        .attr('fill', d => TYPE_FILL[d.type])
+        .attr('fill-opacity', 0.15)
+        .attr('stroke', d => TYPE_COLOR[d.type])
+        .attr('stroke-width', 1.2)
+        .attr('stroke-opacity', 0.65);
+
+      g.each(function(d) {
+        const el = d3.select(this);
+        const words = d.name.split(' ');
+        const fs = Math.max(7.5, Math.min(d.r * 0.35, 12));
+        if (words.length >= 2 && d.r > 24) {
+          el.append('text').attr('text-anchor','middle').attr('dy','-0.3em')
+            .attr('font-size', fs).attr('fill', TYPE_COLOR[d.type])
+            .attr('font-family',"'Crimson Text', serif").attr('font-style','italic')
+            .attr('pointer-events','none').text(words[0]);
+          el.append('text').attr('text-anchor','middle').attr('dy','0.9em')
+            .attr('font-size', fs * 0.88).attr('fill', TYPE_COLOR[d.type])
+            .attr('font-family',"'Crimson Text', serif").attr('font-style','italic')
+            .attr('pointer-events','none').text(words.slice(1).join(' '));
+        } else {
+          el.append('text').attr('text-anchor','middle').attr('dy','0.35em')
+            .attr('font-size', fs).attr('fill', TYPE_COLOR[d.type])
+            .attr('font-family',"'Crimson Text', serif").attr('font-style','italic')
+            .attr('pointer-events','none').text(d.name.length > 13 ? d.name.slice(0,12)+'…' : d.name);
+        }
+        el.append('text').attr('text-anchor','middle')
+          .attr('dy', words.length >= 2 && d.r > 24 ? '2.1em' : '1.65em')
+          .attr('font-size', 7.5).attr('fill', TYPE_COLOR[d.type])
+          .attr('fill-opacity', 0.6).attr('pointer-events','none')
+          .attr('font-family',"'Crimson Text', serif").attr('font-style','italic')
+          .text(d.adjectives.length + ' adj.');
+      });
+
+      g.on('click', (e, d) => showDetail(d))
+       .on('mouseenter', (e, d) => {
+          tooltip.style.display = 'block';
+          tooltip.style.left = (e.clientX + 14) + 'px';
+          tooltip.style.top = (e.clientY - 8) + 'px';
+          tooltip.innerHTML = `<strong>${d.name}</strong><br>${d.adjectives.slice(0, 5).join(', ')}${d.adjectives.length > 5 ? '…' : ''}`;
+          d3.select(this).select('circle').attr('fill-opacity', 0.38).attr('stroke-width', 2);
+       })
+       .on('mouseleave', (e, d) => {
+          tooltip.style.display = 'none';
+          d3.select(this).select('circle')
+            .attr('fill-opacity', d.name === selectedName ? 0.42 : 0.15)
+            .attr('stroke-width', d.name === selectedName ? 2 : 1.2);
+       });
+
+      g.transition().duration(500).delay((d, i) => i * 20).attr('opacity', 1);
+      return g;
+    });
+
+  simulation.on('tick', () => {
+    node.attr('transform', d => {
+      const x = Math.max(d.r + 3, Math.min(W - d.r - 3, d.x));
+      const y = Math.max(d.r + 3, Math.min(H - d.r - 3, d.y));
+      return `translate(${x},${y})`;
+    });
+  });
+}
+
+function showDetail(d) {
+  selectedName = d.name;
+  document.getElementById('detail-placeholder').style.display = 'none';
+  const panel = document.getElementById('detail-content');
+  panel.style.display = 'block';
+  panel.innerHTML = `
+    <div style="margin-bottom:10px;">
+      <div style="font-family:'Playfair Display',serif;font-size:1rem;font-style:italic;color:var(--ink);margin-bottom:4px;">${d.name}</div>
+      <span style="font-size:0.7rem;padding:2px 7px;background:${TYPE_BG[d.type]};color:${TYPE_TXT[d.type]};">${TYPE_LABEL[d.type]}</span>
+    </div>
+    <div style="font-size:0.75rem;color:var(--ink-light);font-style:italic;margin-bottom:8px;">${d.adjectives.length} descriptor${d.adjectives.length !== 1 ? 's' : ''} found</div>
+    <div style="display:flex;flex-wrap:wrap;gap:3px;">
+      ${d.adjectives.sort().map(adj => `<span style="font-size:0.68rem;padding:2px 7px;background:${TYPE_BG[d.type]};color:${TYPE_TXT[d.type]};font-style:italic;">${adj}</span>`).join('')}
+    </div>`;
+
+  d3.select('#viz-svg').selectAll('.node circle')
+    .attr('fill-opacity', nd => nd.name === d.name ? 0.42 : 0.1)
+    .attr('stroke-width', nd => nd.name === d.name ? 2 : 0.8);
+}
+
+// ── CLUSTER ANALYSIS ──
+function scoreCluster(adjectives, cluster) {
+  return adjectives.filter(a => cluster.words.includes(a.toLowerCase())).length;
+}
+function buildFrequencyMap() {
+  const freq = {};
+  ALL_DATA.forEach(d => d.adjectives.forEach(a => { freq[a] = (freq[a] || 0) + 1; }));
+  return freq;
+}
+function buildClusterScores() {
+  const types = ['ruler','person','place'];
+  const scores = {};
+  types.forEach(t => {
+    scores[t] = {};
+    CLUSTERS.forEach(c => { scores[t][c.id] = 0; });
+    ALL_DATA.filter(d => d.type === t).forEach(d => {
+      CLUSTERS.forEach(c => { scores[t][c.id] += scoreCluster(d.adjectives, c); });
+    });
+  });
+  return scores;
+}
+function buildClusterNameMap() {
+  const map = {};
+  CLUSTERS.forEach(c => {
+    map[c.id] = ALL_DATA.map(d => ({
+      name: d.name, type: d.type,
+      count: scoreCluster(d.adjectives, c),
+      matches: d.adjectives.filter(a => c.words.includes(a.toLowerCase()))
+    })).filter(x => x.count > 0).sort((a,b) => b.count - a.count).slice(0, 8);
+  });
+  return map;
+}
+
+const freqMap = buildFrequencyMap();
+const clusterScores = buildClusterScores();
+const clusterNameMap = buildClusterNameMap();
+
+function renderClusterCards() {
+  const container = document.getElementById('cluster-cards');
+  container.innerHTML = '';
+  CLUSTERS.forEach(c => {
+    const total = ALL_DATA.reduce((s, d) => s + scoreCluster(d.adjectives, c), 0);
+    const div = document.createElement('div');
+    div.className = 'cluster-card' + (selectedCluster === c.id ? ' selected' : '');
+    div.style.borderColor = selectedCluster === c.id ? c.color : '';
+    div.innerHTML = `
+      <div class="cluster-name" style="color:${c.color};">${c.label}</div>
+      <div class="cluster-count">${total}</div>
+      <div class="cluster-sub">occurrences</div>
+      <div class="cluster-pills">
+        ${c.words.slice(0,4).map(w => `<span class="cluster-pill" style="background:${c.bg};color:${c.txt};">${w}</span>`).join('')}
+      </div>`;
+    div.onclick = () => {
+      selectedCluster = selectedCluster === c.id ? null : c.id;
+      renderClusterCards();
+      renderClusterDetail();
+    };
+    container.appendChild(div);
+  });
+}
+
+function renderFreqBars() {
+  const sorted = Object.entries(freqMap).sort((a,b) => b[1]-a[1]).slice(0, 10);
+  const max = sorted[0][1];
+  const WCOLOR = {
+    great:"#8B3A1A", noble:"#9A7210", vast:"#2A4A6A", rich:"#2A5220",
+    fine:"#6A3A8A", magnificent:"#9A7210", wise:"#2A5220",
+    valiant:"#8B3A1A", mighty:"#8B3A1A", worthy:"#2A5220",
+    ancient:"#2A4A6A", fertile:"#2A5220"
+  };
+  document.getElementById('freq-bars').innerHTML = sorted.map(([word, count]) => {
+    const col = WCOLOR[word] || '#7A5C3A';
+    const pct = Math.round((count / max) * 100);
+    return `<div class="freq-row">
+      <span class="freq-word">${word}</span>
+      <div class="freq-track"><div class="freq-fill" style="width:${pct}%;background:${col};"></div></div>
+      <span class="freq-count">${count}</span>
+    </div>`;
+  }).join('');
+}
+
+function renderHeatmap() {
+  const types = [{key:'ruler',label:'Rulers'},{key:'person',label:'Persons'},{key:'place',label:'Places'}];
+  const headerEl = document.getElementById('heatmap-header');
+  headerEl.innerHTML = `<div style="min-width:62px;"></div>` +
+    CLUSTERS.map(c => `<div class="heat-col-label" style="color:${c.color};">${c.label.split(' ')[0]}</div>`).join('');
+  const container = document.getElementById('heatmap');
+  container.innerHTML = types.map(t => {
+    const vals = CLUSTERS.map(c => clusterScores[t.key][c.id]);
+    const rowMax = Math.max(...vals);
+    return `<div class="heat-row">
+      <div class="heat-type-label">${t.label}</div>
+      ${CLUSTERS.map((c, i) => {
+        const v = vals[i];
+        const alpha = rowMax > 0 ? 0.12 + (v / rowMax) * 0.78 : 0.1;
+        const [r,g,b] = [parseInt(c.color.slice(1,3),16),parseInt(c.color.slice(3,5),16),parseInt(c.color.slice(5,7),16)];
+        const textCol = alpha > 0.45 ? c.txt : '#7A6A5A';
+        return `<div class="heat-cell" style="background:rgba(${r},${g},${b},${alpha.toFixed(2)});color:${textCol};">${v}</div>`;
+      }).join('')}
+    </div>`;
+  }).join('');
+}
+
+function renderClusterDetail() {
+  const panel = document.getElementById('cluster-detail-panel');
+  if (!selectedCluster) {
+    panel.innerHTML = `<div style="font-size:0.85rem;font-style:italic;color:var(--ink-light);">Click a cluster above to see which names anchor it</div>`;
+    return;
+  }
+  const c = CLUSTERS.find(x => x.id === selectedCluster);
+  const names = clusterNameMap[selectedCluster];
+  panel.innerHTML = `
+    <div class="detail-panel-title" style="color:${c.color};">${c.label} — names by cluster strength</div>
+    <div class="name-cards-grid">
+      ${names.map(n => `
+        <div class="name-card">
+          <div class="name-card-title">${n.name}</div>
+          <div class="name-card-type" style="color:${TYPE_COLOR[n.type]};">${TYPE_LABEL[n.type]}</div>
+          <div class="name-adj-pills">
+            ${n.matches.map(m => `<span class="name-adj-pill" style="background:${c.bg};color:${c.txt};">${m}</span>`).join('')}
+          </div>
+        </div>`).join('')}
+    </div>`;
+}
+
+// ── INIT ──
+const LOAD_MSGS = [
+  "Unrolling the manuscript…",
+  "Tracing routes across Cathay…",
+  "Tallying epithets of the Great Khan…",
+  "Mapping kingdoms and their names…"
+];
+let msgIdx = 0;
+const msgEl = document.getElementById('load-msg');
+const msgInt = setInterval(() => {
+  msgIdx = (msgIdx + 1) % LOAD_MSGS.length;
+  msgEl.textContent = LOAD_MSGS[msgIdx];
+}, 1800);
+
+window.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => {
+    clearInterval(msgInt);
+    document.getElementById('loading-overlay').style.display = 'none';
+    updateStats();
+    applyFilter();
+    renderClusterCards();
+    renderFreqBars();
+    renderHeatmap();
+    renderClusterDetail();
+  }, 900);
+});
+
+window.addEventListener('resize', () => {
+  if (filteredData.length) renderViz(filteredData);
+});
+</script>
+</body>
+</html>
