@@ -74,5 +74,107 @@ h(Math,"asinh",xr.asinh,Math.asinh(1e300)===Infinity);h(Math,"atanh",xr.atanh,Ma
 ;require("harlowe")}());
 </script>
 
+<!-- Site navigation overlay: appears when the story reaches a dead end (no more choices) -->
+<style>
+#site-continue-overlay {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  padding: 28px 24px 36px;
+  background: linear-gradient(to top, rgba(5,5,8,0.96) 60%, transparent);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  transition: opacity 1.4s ease;
+  pointer-events: none;
+  z-index: 9999;
+}
+#site-continue-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+#site-continue-overlay p {
+  font-family: Georgia, serif;
+  font-size: 0.82rem;
+  font-style: italic;
+  color: #807060;
+  letter-spacing: 0.06em;
+}
+#site-continue-overlay a {
+  font-family: Georgia, serif;
+  font-size: 0.95rem;
+  font-style: italic;
+  color: #a09080;
+  border: 1px solid #3a2e22;
+  padding: 10px 32px;
+  text-decoration: none;
+  letter-spacing: 0.08em;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+#site-continue-overlay a:hover {
+  background: rgba(20,15,10,0.9);
+  border-color: #6a5040;
+  color: #e0d0c0;
+}
+#site-back-link {
+  position: fixed;
+  top: 18px;
+  left: 20px;
+  font-family: Georgia, serif;
+  font-size: 0.75rem;
+  font-style: italic;
+  color: #3a3028;
+  text-decoration: none;
+  letter-spacing: 0.06em;
+  z-index: 9999;
+  transition: color 0.2s;
+}
+#site-back-link:hover { color: #807060; }
+</style>
+
+<a id="site-back-link" href="index.html">← back to start</a>
+
+<div id="site-continue-overlay">
+  <p>The day has settled.</p>
+  <a href="meditation.html">Continue to Part II →</a>
+</div>
+
+<script>
+(function() {
+  var overlay = document.getElementById('site-continue-overlay');
+  var shown = false;
+
+  function checkForEnd() {
+    if (shown) return;
+    var passage = document.querySelector('tw-passage');
+    if (!passage) return;
+    var links = passage.querySelectorAll('tw-link, tw-broken-link, a[href]');
+    if (links.length === 0 && passage.textContent.trim().length > 0) {
+      shown = true;
+      setTimeout(function() {
+        overlay.classList.add('visible');
+      }, 1200);
+    }
+  }
+
+  var observer = new MutationObserver(function() {
+    setTimeout(checkForEnd, 300);
+  });
+
+  function startObserving() {
+    var story = document.querySelector('tw-story');
+    if (story) {
+      observer.observe(story, { childList: true, subtree: true });
+      checkForEnd();
+    } else {
+      setTimeout(startObserving, 200);
+    }
+  }
+
+  startObserving();
+})();
+</script>
+
 </body>
 </html>
