@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Part II — Stillness</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 100%; height: 100%;
+      background: #050508;
+      overflow: hidden;
+      cursor: none;
+    }
+    canvas { display: block; }
+
+    #continue-btn {
+      position: fixed;
+      bottom: 52px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: Georgia, serif;
+      font-size: 0.95rem;
+      font-style: italic;
+      color: #a09888;
+      background: transparent;
+      border: 1px solid #2a2018;
+      padding: 10px 32px;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      text-decoration: none;
+      opacity: 0;
+      transition: opacity 1.2s ease, background 0.2s, border-color 0.2s, color 0.2s;
+      pointer-events: none;
+    }
+    #continue-btn.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    #continue-btn:hover {
+      background: #110e0a;
+      border-color: #6a5848;
+      color: #e0d8d0;
+    }
+
+    #part-label {
+      position: fixed;
+      top: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: Georgia, serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      color: #2a2520;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+
+<div id="part-label">Part II &nbsp;·&nbsp; Stillness</div>
+<a id="continue-btn" href="polo-names.html">continue to Part III →</a>
+
+<script src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.js"></script>
+<script>
+new p5(function(p) {
+
+  // Box breathing: 4s in, 4s hold, 4s out, 4s hold
+  const PHASE_DURATION = 4; // seconds per phase
+  const CYCLES_BEFORE_CONTINUE = 3;
+  const PHASE_LABELS = ['breathe in', 'hold', 'breathe out', 'hold'];
+
+  let phase = 0;
+  let phaseElapsed = 0;
+  let cycleCount = 0;
+  let continueShown = false;
+  let lastMillis = 0;
+
+  const MIN_R = 0.10; // fraction of min(width,height)
+  const MAX_R = 0.22;
+
+  p.setup = function() {
+    p.createCanvas(p.windowWidth, p.windowHeight);
+    p.noStroke();
+    lastMillis = p.millis();
+  };
+
+  p.draw = function() {
+    let now = p.millis();
+    let dt = (now - lastMillis) / 1000;
+    lastMillis = now;
+
+    // Advance phase timer
+    phaseElapsed += dt;
+    if (phaseElapsed >= PHASE_DURATION) {
+      phaseElapsed -= PHASE_DURATION;
+      phase = (phase + 1) % 4;
+      if (phase === 0) {
+        cycleCount++;
+        if (cycleCount >= CYCLES_BEFORE_CONTINUE && !continueShown) {
+          continueShown = true;
+          document.getElementById('continue-btn').classList.add('visible');
+        }
+      }
+    }
+
+    let t = phaseElapsed / PHASE_DURATION; // 0..1 within current phase
+
+    // Eased radius
+    let baseR = p.min(p.width, p.height);
+    let minR = baseR * MIN_R;
+    let maxR = baseR * MAX_R;
+    let r;
+    if (phase === 0) {
+      r = p.lerp(minR, maxR, easeInOut(t));
+    } else if (phase === 1) {
+      r = maxR;
+    } else if (phase === 2) {
+      r = p.lerp(maxR, minR, easeInOut(t));
+    } else {
+      r = minR;
+    }
+
+    // Background
+    p.background(5, 5, 8);
+
+    let cx = p.width / 2;
+    let cy = p.height / 2;
+
+    // Outer glow layers
+    for (let i = 8; i >= 1; i--) {
+      let gR = r + i * (baseR * 0.028);
+      let alpha = (9 - i) * 2.5;
+      p.fill(100, 120, 160, alpha);
+      p.ellipse(cx, cy, gR * 2);
+    }
+
+    // Main circle
+    p.fill(130, 150, 190, 55);
+    p.stroke(160, 180, 220, 90);
+    p.strokeWeight(0.8);
+    p.ellipse(cx, cy, r * 2);
+    p.noStroke();
+
+    // Inner highlight
+    p.fill(200, 215, 240, 18);
+    p.ellipse(cx - r * 0.18, cy - r * 0.22, r * 0.9, r * 0.7);
+
+    // Phase label
+    let labelAlpha = getLabelAlpha(t, phase);
+    p.fill(190, 185, 178, labelAlpha);
+    p.textFont('Georgia');
+    p.textSize(p.constrain(baseR * 0.030, 13, 18));
+    p.textAlign(p.CENTER, p.CENTER);
+    p.text(PHASE_LABELS[phase], cx, cy + r + baseR * 0.072);
+
+    // Count down
+    let secondsLeft = Math.ceil(PHASE_DURATION - phaseElapsed);
+    p.fill(100, 95, 88, 80);
+    p.textSize(p.constrain(baseR * 0.022, 10, 14));
+    p.text(secondsLeft, cx, cy + r + baseR * 0.115);
+
+    // Cycle dots
+    let dotSpacing = baseR * 0.030;
+    let dotStartX = cx - (CYCLES_BEFORE_CONTINUE - 1) * dotSpacing / 2;
+    let dotY = cy - r - baseR * 0.075;
+    for (let i = 0; i < CYCLES_BEFORE_CONTINUE; i++) {
+      let filled = i < cycleCount;
+      let dotAlpha = filled ? 90 : 30;
+      p.fill(160, 155, 145, dotAlpha);
+      p.ellipse(dotStartX + i * dotSpacing, dotY, baseR * 0.012);
+    }
+  };
+
+  p.windowResized = function() {
+    p.resizeCanvas(p.windowWidth, p.windowHeight);
+  };
+
+  function easeInOut(t) {
+    return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+  }
+
+  function getLabelAlpha(t, ph) {
+    // Fade in at start of phase, fade out at end
+    let fadeLen = 0.15;
+    if (t < fadeLen) return p.map(t, 0, fadeLen, 0, 200);
+    if (t > 1 - fadeLen) return p.map(t, 1 - fadeLen, 1, 200, 0);
+    return 200;
+  }
+});
+</script>
+</body>
+</html>

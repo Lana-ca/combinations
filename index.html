@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Day in Three Parts</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&family=Crimson+Text:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      width: 100%; height: 100%;
+      background: #050508;
+      color: #c0b8b0;
+      font-family: 'Crimson Text', Georgia, serif;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 40px 24px;
+    }
+
+    .eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
+      color: #504840;
+      text-transform: uppercase;
+      margin-bottom: 36px;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 400;
+      font-style: italic;
+      color: #e0d8d0;
+      line-height: 1.2;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .intro {
+      font-size: 1.05rem;
+      line-height: 1.85;
+      color: #807870;
+      font-style: italic;
+      text-align: center;
+      max-width: 440px;
+      margin-bottom: 56px;
+    }
+
+    .steps {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 0;
+      margin-bottom: 56px;
+      width: 100%;
+      max-width: 480px;
+    }
+
+    .step {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .step-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-style: italic;
+      color: #4a4038;
+      line-height: 1;
+    }
+
+    .step-title {
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      color: #504840;
+      text-transform: uppercase;
+    }
+
+    .step-desc {
+      font-size: 0.82rem;
+      font-style: italic;
+      color: #3a3028;
+      text-align: center;
+      line-height: 1.5;
+      max-width: 110px;
+    }
+
+    .step-arrow {
+      padding-top: 6px;
+      color: #2a2018;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    .rule {
+      width: 1px;
+      height: 40px;
+      background: #1a1510;
+      margin: 0 auto 56px;
+    }
+
+    .begin-btn {
+      display: inline-block;
+      font-family: 'Crimson Text', serif;
+      font-size: 1rem;
+      font-style: italic;
+      color: #b0a898;
+      border: 1px solid #2a2018;
+      padding: 11px 36px;
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+    }
+
+    .begin-btn:hover {
+      background: #110e0a;
+      border-color: #6a5848;
+      color: #e0d8d0;
+    }
+
+    .portrait-wrap {
+      margin-top: 64px;
+      opacity: 0.18;
+    }
+
+    .portrait-wrap img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 50%;
+      filter: grayscale(1);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="eyebrow">An Interactive Essay in Three Parts</div>
+
+  <h1>A Day in Three Parts</h1>
+
+  <p class="intro">
+    Some days feel impossible to hold.<br>
+    This is a small guide through the overwhelm —<br>
+    a breath, and then a question about how we see.
+  </p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">I.</div>
+      <div class="step-title">Overwhelm</div>
+      <div class="step-desc">a day that is too much</div>
+    </div>
+    <div class="step-arrow">→</div>
+    <div class="step">
+      <div class="step-num">II.</div>
+      <div class="step-title">Stillness</div>
+      <div class="step-desc">a moment to breathe</div>
+    </div>
+    <div class="step-arrow">→</div>
+    <div class="step">
+      <div class="step-num">III.</div>
+      <div class="step-title">Perspective</div>
+      <div class="step-desc">what language does to the world</div>
+    </div>
+  </div>
+
+  <div class="rule"></div>
+
+  <a href="New new (1)-1.html" class="begin-btn">Begin →</a>
+
+  <div class="portrait-wrap">
+    <img src="self portrait.png" alt="">
+  </div>
+
+</body>
+</html>
