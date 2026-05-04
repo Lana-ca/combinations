@@ -3,563 +3,773 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>A Day in Words</title>
+<title>The Architecture of a Day</title>
+<meta name="description" content="A linguistic analysis of how we describe the demands, practices, and moments of an overwhelming day.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=Crimson+Text:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Crimson+Text:ital,wght@0,400;0,600;1,400;1,600&family=IM+Fell+English+SC&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg: #050508;
-  --ink: #e0d8d0;
-  --ink-mid: #9a9088;
-  --ink-dim: #504840;
-  --ink-faint: #1e1810;
-  --rust:   #c05040;
-  --green:  #4a9a3a;
-  --gray:   #848080;
-  --gold:   #c4a030;
-  --blue:   #4a6a9a;
-  --purple: #9a5aaa;
+  --bg:           #070609;
+  --bg-panel:     #0e0b0f;
+  --bg-mid:       #130f15;
+  --ink:          #ddd5cc;
+  --ink-mid:      #9a9088;
+  --ink-light:    #5a5048;
+  --rust:         #b84838;
+  --rust-light:   #d06050;
+  --rust-pale:    #b8483818;
+  --gold:         #b89428;
+  --gold-light:   #d4b040;
+  --gold-pale:    #b8942818;
+  --forest:       #3a8a2a;
+  --forest-light: #58a840;
+  --forest-pale:  #3a8a2a18;
+  --slate:        #3a5a8a;
+  --slate-light:  #5878a8;
+  --slate-pale:   #3a5a8a18;
+  --gray:         #706870;
+  --gray-pale:    #70687018;
+  --purple:       #8a4a9a;
+  --purple-pale:  #8a4a9a18;
+  --border:       rgba(221,213,204,0.07);
+  --border-strong:rgba(221,213,204,0.13);
 }
 
-html, body {
-  width: 100%; min-height: 100%;
+html { font-size: 16px; }
+
+body {
   background: var(--bg);
   color: var(--ink);
   font-family: 'Crimson Text', Georgia, serif;
+  font-size: 17px;
+  line-height: 1.7;
+  min-height: 100vh;
 }
 
-canvas#bg {
+/* ── BREATHING CANVAS ── */
+#bg-canvas {
   position: fixed;
   inset: 0; width: 100%; height: 100%;
   pointer-events: none;
   z-index: 0;
 }
 
-#app {
-  position: relative;
-  z-index: 1;
+/* ── DECORATIVE BORDER ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 10px;
+  border: 1px solid var(--border);
+  pointer-events: none;
+  z-index: 1000;
 }
 
-/* ── STAGES ── */
-.stage {
-  display: none;
-  min-height: 100vh;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 72px 28px;
+/* ── MAIN STRUCTURE ── */
+header, main, footer { position: relative; z-index: 1; }
+
+/* ── HEADER ── */
+header {
+  padding: 64px 60px 44px;
+  border-bottom: 1px solid var(--border-strong);
+}
+
+.header-ornament {
   text-align: center;
-  opacity: 0;
-  transition: opacity 0.85s ease;
-}
-.stage.active { display: flex; }
-.stage.visible { opacity: 1; }
-
-.stage-tag {
-  font-size: 0.65rem;
-  letter-spacing: 0.24em;
-  color: var(--ink-dim);
-  text-transform: uppercase;
-  margin-bottom: 44px;
+  font-family: 'IM Fell English SC', serif;
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  color: var(--ink-light);
+  margin-bottom: 20px;
 }
 
-h1.title {
+header h1 {
   font-family: 'Playfair Display', Georgia, serif;
-  font-size: clamp(2rem, 5vw, 3.4rem);
+  font-size: clamp(2rem, 5vw, 3.8rem);
   font-weight: 400;
   font-style: italic;
+  line-height: 1.15;
   color: var(--ink);
-  line-height: 1.2;
-  margin-bottom: 22px;
+  text-align: center;
+  margin-bottom: 8px;
 }
 
-.narr {
-  font-size: clamp(1rem, 2.2vw, 1.25rem);
-  line-height: 1.9;
-  color: var(--ink-mid);
-  font-style: italic;
-  max-width: 520px;
-  margin-bottom: 52px;
-}
+header h1 em { font-style: normal; color: var(--rust-light); }
 
-.prompt {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(0.82rem, 1.8vw, 1rem);
+.header-subtitle {
+  text-align: center;
+  font-family: 'Crimson Text', serif;
+  font-size: 1.1rem;
   font-style: italic;
-  color: var(--ink-dim);
-  letter-spacing: 0.04em;
+  color: var(--ink-light);
   margin-bottom: 26px;
 }
 
-.choices {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  align-items: center;
-  width: 100%;
+.header-rule {
+  display: flex; align-items: center; gap: 12px;
+  max-width: 500px; margin: 0 auto 26px;
+}
+.header-rule::before, .header-rule::after {
+  content: ''; flex: 1; height: 1px; background: var(--border-strong);
+}
+.header-rule-diamond {
+  width: 6px; height: 6px;
+  background: var(--rust); transform: rotate(45deg); flex-shrink: 0;
 }
 
-.choice {
-  font-family: 'Crimson Text', serif;
-  font-size: 1rem;
-  font-style: italic;
-  color: var(--ink-mid);
-  background: transparent;
-  border: 1px solid var(--ink-faint);
-  padding: 11px 28px;
-  cursor: pointer;
-  letter-spacing: 0.04em;
-  transition: background 0.18s, border-color 0.18s, color 0.18s;
-  max-width: 380px;
-  width: 100%;
-}
-.choice:hover {
-  background: #100d09;
-  border-color: var(--ink-dim);
-  color: var(--ink);
+.header-intro {
+  max-width: 700px; margin: 0 auto;
+  text-align: center;
+  font-size: 1.05rem; color: var(--ink-mid); line-height: 1.8;
 }
 
-.rule {
-  width: 1px;
-  height: 44px;
-  background: var(--ink-faint);
-  margin: 0 auto 44px;
+.source-note {
+  margin-top: 22px; text-align: center;
+  font-size: 0.78rem; font-family: 'Crimson Text', serif;
+  color: var(--ink-light); letter-spacing: 0.04em;
 }
 
-/* ── ANALYSIS STAGE ── */
-#stage-end {
-  justify-content: flex-start;
-  padding-top: 80px;
-  padding-bottom: 80px;
+/* ── MAIN LAYOUT ── */
+main { max-width: 1200px; margin: 0 auto; padding: 0 40px 80px; }
+
+/* ── SECTION HEADS ── */
+.section-label {
+  display: flex; align-items: center; gap: 14px; padding: 54px 0 8px;
+}
+.section-num {
+  font-family: 'Playfair Display', serif; font-size: 2.2rem;
+  font-style: italic; color: var(--rust); line-height: 1; flex-shrink: 0;
+}
+.section-title {
+  font-family: 'Playfair Display', serif; font-size: 1.45rem;
+  font-weight: 400; color: var(--ink); line-height: 1.25;
+}
+.section-desc {
+  font-size: 1rem; color: var(--ink-light); font-style: italic;
+  max-width: 700px; margin-bottom: 24px; line-height: 1.65;
 }
 
-.analysis-hed {
-  margin-bottom: 40px;
-  width: 100%;
-}
-.analysis-hed .stage-tag { margin-bottom: 16px; }
-
-#word-pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: center;
-  max-width: 600px;
-  margin: 0 auto 40px;
-}
-.pill {
-  font-size: 0.8rem;
-  font-style: italic;
-  padding: 4px 13px;
-  border-radius: 1px;
+/* ── PANELS ── */
+.panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 2px; padding: 24px 28px;
 }
 
-#viz-wrap {
-  width: 100%;
-  max-width: 680px;
-  margin: 0 auto 32px;
+/* ── FILTER BAR ── */
+.filter-bar {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 16px; flex-wrap: wrap;
 }
-#viz-svg { width: 100%; display: block; }
+.filter-bar label {
+  font-size: 0.8rem; font-family: 'Crimson Text', serif;
+  font-style: italic; color: var(--ink-light); letter-spacing: 0.04em;
+}
+.filter-btn {
+  font-family: 'Crimson Text', serif; font-size: 0.85rem;
+  padding: 3px 14px; border: 1px solid var(--border-strong);
+  background: transparent; color: var(--ink-mid);
+  cursor: pointer; transition: all 0.15s; border-radius: 1px;
+}
+.filter-btn:hover { background: var(--bg-mid); }
+.filter-btn.active {
+  background: var(--ink); color: var(--bg); border-color: var(--ink);
+}
+.search-input {
+  margin-left: auto; font-family: 'Crimson Text', serif;
+  font-size: 0.9rem; padding: 3px 10px;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-mid); color: var(--ink);
+  width: 150px; border-radius: 1px; outline: none;
+}
+.search-input:focus { border-color: var(--rust); }
+.search-input::placeholder { color: var(--ink-light); font-style: italic; }
 
-#legend {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px 18px;
-  justify-content: center;
-  max-width: 600px;
-  margin: 0 auto 44px;
+/* ── VIZ AREA ── */
+.viz-wrap { display: flex; gap: 16px; align-items: flex-start; }
+.svg-wrap {
+  flex: 1; background: var(--bg-mid);
+  border: 1px solid var(--border); position: relative;
+  min-height: 460px; border-radius: 2px;
 }
-.leg-item {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  font-size: 0.72rem;
-  font-style: italic;
-  color: var(--ink-dim);
+#viz-svg { display: block; width: 100%; }
+
+.detail-col {
+  width: 200px; flex-shrink: 0;
+  display: flex; flex-direction: column; gap: 10px;
 }
-.leg-dot {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  flex-shrink: 0;
+.detail-box {
+  background: var(--bg-mid); border: 1px solid var(--border);
+  border-radius: 2px; padding: 14px; min-height: 260px;
+}
+#detail-placeholder { margin-top: 40px; text-align: center; }
+.detail-icon { font-size: 28px; opacity: 0.15; margin-bottom: 10px; }
+#detail-placeholder p {
+  font-size: 0.8rem; color: var(--ink-light);
+  font-style: italic; line-height: 1.5;
 }
 
+.stat-card {
+  background: var(--bg-mid); border: 1px solid var(--border);
+  border-radius: 2px; padding: 10px 14px;
+}
+.stat-label { font-size: 0.72rem; color: var(--ink-light); font-style: italic; margin-bottom: 1px; }
+.stat-val {
+  font-family: 'Playfair Display', serif; font-size: 1.8rem;
+  font-weight: 400; color: var(--ink); line-height: 1;
+}
+
+.legend {
+  display: flex; flex-direction: column; gap: 5px;
+  font-size: 0.78rem; color: var(--ink-mid); font-style: italic;
+}
+.legend-row { display: flex; align-items: center; gap: 7px; }
+.legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── TOOLTIP ── */
+#tooltip {
+  display: none; position: fixed; pointer-events: none;
+  background: var(--bg-panel); border: 1px solid var(--border-strong);
+  padding: 7px 11px; font-size: 0.82rem; color: var(--ink-mid);
+  max-width: 170px; z-index: 500; line-height: 1.4;
+  font-style: italic; box-shadow: 2px 2px 12px rgba(0,0,0,0.4);
+}
+#tooltip strong { font-style: normal; color: var(--ink); font-size: 0.88rem; }
+
+/* ── CLUSTER SECTION ── */
+.cluster-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 8px; margin-bottom: 16px;
+}
+@media (max-width: 700px) { .cluster-grid { grid-template-columns: repeat(2,1fr); } }
+
+.cluster-card {
+  background: var(--bg-panel); border: 1px solid var(--border);
+  border-radius: 2px; padding: 11px 13px;
+  cursor: pointer; transition: border-color 0.15s, background 0.15s;
+}
+.cluster-card:hover { background: var(--bg-mid); }
+.cluster-card.selected { border-width: 2px; }
+.cluster-name {
+  font-family: 'Playfair Display', serif; font-size: 0.82rem;
+  font-weight: 500; margin-bottom: 2px;
+}
+.cluster-count {
+  font-family: 'Playfair Display', serif; font-size: 1.6rem;
+  font-weight: 400; line-height: 1; color: var(--ink);
+}
+.cluster-sub { font-size: 0.72rem; color: var(--ink-light); font-style: italic; margin-bottom: 7px; }
+.cluster-pills { display: flex; flex-wrap: wrap; gap: 3px; }
+.cluster-pill { font-size: 0.68rem; padding: 1px 6px; border-radius: 1px; font-style: italic; }
+
+.two-col {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;
+}
+@media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
+
+.inner-panel {
+  background: var(--bg-mid); border: 1px solid var(--border);
+  border-radius: 2px; padding: 14px 16px;
+}
+.inner-panel-title {
+  font-size: 0.78rem; font-style: italic; color: var(--ink-light);
+  margin-bottom: 12px; letter-spacing: 0.03em;
+}
+
+.freq-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+.freq-word {
+  font-family: 'Crimson Text', serif; font-size: 0.82rem;
+  font-style: italic; color: var(--ink-mid); min-width: 80px; text-align: right;
+}
+.freq-track { flex: 1; height: 10px; background: var(--bg); border-radius: 1px; overflow: hidden; }
+.freq-fill { height: 100%; border-radius: 1px; }
+.freq-count { font-size: 0.72rem; color: var(--ink-light); min-width: 20px; font-style: italic; }
+
+.heat-row { display: flex; align-items: center; gap: 2px; margin-bottom: 3px; }
+.heat-type-label {
+  font-size: 0.75rem; font-style: italic; color: var(--ink-light);
+  min-width: 58px; text-align: right; padding-right: 8px;
+}
+.heat-cell {
+  flex: 1; height: 22px; border-radius: 1px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; font-weight: 600; font-family: 'Crimson Text', serif;
+  cursor: default; transition: opacity 0.2s;
+}
+.heat-header-row { display: flex; align-items: center; gap: 2px; margin-bottom: 5px; }
+.heat-col-label {
+  flex: 1; font-size: 0.63rem; color: var(--ink-light);
+  text-align: center; font-style: italic; line-height: 1.2;
+}
+
+.detail-panel {
+  background: var(--bg-mid); border: 1px solid var(--border);
+  border-radius: 2px; padding: 14px 16px; margin-bottom: 16px; min-height: 80px;
+}
+.detail-panel-title {
+  font-family: 'Playfair Display', serif; font-size: 0.88rem;
+  font-style: italic; margin-bottom: 10px;
+}
+.name-cards-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+.name-card {
+  background: var(--bg-panel); border: 1px solid var(--border);
+  border-radius: 2px; padding: 7px 11px; min-width: 130px;
+}
+.name-card-title {
+  font-family: 'Playfair Display', serif; font-size: 0.85rem;
+  font-weight: 400; color: var(--ink); margin-bottom: 2px;
+}
+.name-card-type { font-size: 0.7rem; font-style: italic; margin-bottom: 5px; }
+.name-adj-pills { display: flex; flex-wrap: wrap; gap: 2px; }
+.name-adj-pill { font-size: 0.65rem; padding: 1px 5px; border-radius: 1px; font-style: italic; }
+
+/* ── ANALYSIS BLOCKS ── */
 .analysis-block {
-  max-width: 560px;
-  margin: 0 auto 48px;
-  border-left: 2px solid var(--ink-faint);
-  padding: 18px 22px;
-  text-align: left;
+  background: var(--bg-panel);
+  border-left: 3px solid var(--rust);
+  padding: 20px 24px; margin: 30px 0;
+  font-size: 1rem; color: var(--ink-mid); line-height: 1.8;
 }
 .analysis-block h3 {
-  font-family: 'Playfair Display', serif;
-  font-size: 0.9rem;
-  font-weight: 400;
-  font-style: italic;
-  color: var(--ink-dim);
-  margin-bottom: 10px;
-}
-.analysis-block p {
-  font-size: 0.98rem;
-  color: var(--ink-mid);
-  font-style: italic;
-  line-height: 1.8;
+  font-family: 'Playfair Display', serif; font-size: 1.05rem;
+  font-weight: 500; font-style: italic; color: var(--rust-light); margin-bottom: 6px;
 }
 
-.restart {
-  font-family: 'Crimson Text', serif;
-  font-size: 0.88rem;
-  font-style: italic;
-  color: var(--ink-dim);
-  background: transparent;
-  border: 1px solid var(--ink-faint);
-  padding: 9px 26px;
-  cursor: pointer;
-  letter-spacing: 0.06em;
-  transition: border-color 0.18s, color 0.18s;
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border-strong);
+  padding: 28px 60px; background: var(--bg-panel);
+  display: flex; justify-content: space-between;
+  align-items: flex-end; flex-wrap: wrap; gap: 16px;
+  position: relative; z-index: 1;
 }
-.restart:hover { border-color: var(--ink-dim); color: var(--ink-mid); }
+.footer-left {
+  font-size: 0.82rem; color: var(--ink-light);
+  font-style: italic; line-height: 1.6;
+}
+.footer-right {
+  font-family: 'IM Fell English SC', serif; font-size: 0.75rem;
+  letter-spacing: 0.12em; color: var(--ink-light); text-align: right;
+}
 
-#tip {
-  position: fixed;
-  pointer-events: none;
-  background: #0d0a07;
-  border: 1px solid var(--ink-faint);
-  padding: 6px 10px;
-  font-size: 0.78rem;
-  color: var(--ink-mid);
-  font-style: italic;
-  z-index: 900;
-  display: none;
-  line-height: 1.4;
+/* ── LOADING ── */
+.loading-overlay {
+  position: absolute; inset: 0; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 14px;
+  background: var(--bg-mid); border-radius: 2px; z-index: 10;
 }
-#tip strong { font-style: normal; color: var(--ink); }
+.dots-row { display: flex; gap: 6px; }
+.dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--ink-light); animation: pulse 1.2s ease-in-out infinite;
+}
+.dot:nth-child(2) { animation-delay: 0.2s; }
+.dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes pulse {
+  0%,80%,100% { transform: scale(0.55); opacity: 0.3; }
+  40% { transform: scale(1); opacity: 1; }
+}
+.loading-text {
+  font-size: 0.85rem; font-style: italic;
+  color: var(--ink-light); font-family: 'Crimson Text', serif;
+}
+
+@media (max-width: 700px) {
+  header, footer { padding: 40px 24px; }
+  main { padding: 0 20px 60px; }
+  .viz-wrap { flex-direction: column; }
+  .detail-col { width: 100%; flex-direction: row; flex-wrap: wrap; }
+  .detail-box { min-height: auto; }
+}
 </style>
 </head>
 <body>
 
-<canvas id="bg"></canvas>
+<canvas id="bg-canvas"></canvas>
 
-<div id="app">
+<header>
+  <div class="header-ornament">A Linguistic Analysis ✦ The Vocabulary of Overwhelm</div>
+  <h1>The Architecture of a <em>Day</em></h1>
+  <p class="header-subtitle">What the words we use to describe our days reveal about how we understand ourselves</p>
+  <div class="header-rule"><div class="header-rule-diamond"></div></div>
+  <p class="header-intro">
+    We do not merely live through our days — we narrate them. This analysis maps the adjectives
+    that attach to the entities of a busy, overwhelming day: its demands, its practices, and
+    its passing moments. The same question that reveals Marco Polo's ideological vocabulary
+    reveals something about our own. What words do we reach for when we describe effort,
+    time, and the self caught inside it?
+  </p>
+  <p class="source-note">
+    Source material: the language of an ordinary, overwhelming day &bull;
+    Vocabulary drawn from academic and professional experience
+  </p>
+</header>
 
-  <!-- OPENING -->
-  <section class="stage" id="stage-open">
-    <div class="stage-tag">An Essay on a Day</div>
-    <h1 class="title">A Day in Words</h1>
-    <p class="narr">
-      You wake up in the morning with another busy day ahead.<br>
-      Your life is starting to feel like a juggling act<br>of tasks and responsibilities.
-    </p>
-    <div class="rule"></div>
-    <button class="choice" onclick="go('stage-1')">Begin →</button>
-  </section>
+<main>
 
-  <!-- CHOICE 1: Morning -->
-  <section class="stage" id="stage-1">
-    <div class="stage-tag">Morning</div>
-    <p class="prompt">Where do you want to focus your energy?</p>
-    <div class="choices">
-      <button class="choice" onclick="pick('work',   'stage-2-work'  )">Dive into work tasks</button>
-      <button class="choice" onclick="pick('school', 'stage-2-school')">Face your school assignments</button>
-    </div>
-  </section>
+  <!-- ── SECTION I ── -->
+  <div class="section-label">
+    <span class="section-num">I.</span>
+    <div><div class="section-title">Entity × Adjective Network</div></div>
+  </div>
+  <p class="section-desc">
+    Each bubble represents a named entity in the day. Bubble size encodes the number of
+    distinct adjectives attached to it. Click any bubble to expand its full descriptor cloud.
+  </p>
 
-  <!-- CHOICE 2a: Work mid-morning -->
-  <section class="stage" id="stage-2-work">
-    <div class="stage-tag">Mid-Morning</div>
-    <p class="narr">You dive into work, each task clamoring for your attention.</p>
-    <p class="prompt">Should you —</p>
-    <div class="choices">
-      <button class="choice" onclick="pick('project', 'stage-3')">Work on the project</button>
-      <button class="choice" onclick="pick('emails',  'stage-3')">Handle the backed-up emails</button>
-      <button class="choice" onclick="pick('meeting', 'stage-3')">Prepare for the morning meeting</button>
-    </div>
-  </section>
-
-  <!-- CHOICE 2b: School mid-morning -->
-  <section class="stage" id="stage-2-school">
-    <div class="stage-tag">Mid-Morning</div>
-    <p class="narr">Assignments, readings, projects — you don't even know where to start.</p>
-    <p class="prompt">Should you —</p>
-    <div class="choices">
-      <button class="choice" onclick="pick('assignment', 'stage-3')">Work on the assignment</button>
-      <button class="choice" onclick="pick('reading',    'stage-3')">Catch up on the readings</button>
-    </div>
-  </section>
-
-  <!-- CHOICE 3: Evening -->
-  <section class="stage" id="stage-3">
-    <div class="stage-tag">Evening</div>
-    <p class="narr">
-      Just like that, the day went by so fast.<br>
-      It feels like you still have so much to do.
-    </p>
-    <p class="prompt">How does the day end?</p>
-    <div class="choices">
-      <button class="choice" onclick="pick('late',  'stage-end')">Push through — work into the night</button>
-      <button class="choice" onclick="pick('rest',  'stage-end')">Let yourself rest early</button>
-      <button class="choice" onclick="pick('cook',  'stage-end')">Put on music and make dinner</button>
-    </div>
-  </section>
-
-  <!-- ANALYSIS -->
-  <section class="stage" id="stage-end">
-    <div class="analysis-hed">
-      <div class="stage-tag">The day has settled</div>
-      <h1 class="title" style="font-size:clamp(1.6rem,4vw,2.4rem); margin-bottom:10px;">Your Vocabulary</h1>
-      <p style="font-size:0.88rem;font-style:italic;color:var(--ink-dim);">
-        What the words you chose reveal about how you describe your own experience
-      </p>
+  <div class="panel">
+    <div class="filter-bar">
+      <label>Filter by type:</label>
+      <button class="filter-btn active" data-filter="all"     onclick="setFilter('all')"     >All</button>
+      <button class="filter-btn"        data-filter="demand"  onclick="setFilter('demand')"  >Demands</button>
+      <button class="filter-btn"        data-filter="practice"onclick="setFilter('practice')">Practices</button>
+      <button class="filter-btn"        data-filter="moment"  onclick="setFilter('moment')"  >Moments</button>
+      <input class="search-input" type="text" id="search"
+             placeholder="Search…" oninput="handleSearch(this.value)">
     </div>
 
-    <div id="word-pills"></div>
-    <div id="viz-wrap"><svg id="viz-svg" height="320"></svg></div>
-    <div id="legend"></div>
-    <div class="analysis-block" id="analysis-note"></div>
-    <button class="restart" onclick="restart()">Begin again →</button>
-  </section>
+    <div class="viz-wrap">
+      <div class="svg-wrap" id="chart-wrap">
+        <div class="loading-overlay" id="loading-overlay">
+          <div class="dots-row"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+          <div class="loading-text" id="load-msg">Sorting through the day…</div>
+        </div>
+        <svg id="viz-svg" height="460"
+             aria-label="Force-directed bubble chart of a day's entities and their adjectives"></svg>
+      </div>
 
-</div>
+      <div class="detail-col">
+        <div class="detail-box">
+          <div id="detail-placeholder">
+            <div class="detail-icon">◎</div>
+            <p>Click any bubble to see its full descriptor cloud</p>
+          </div>
+          <div id="detail-content" style="display:none;"></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Entities mapped</div>
+          <div class="stat-val" id="stat-names">—</div>
+          <div class="stat-label" style="margin-top:10px;">Unique descriptors</div>
+          <div class="stat-val" id="stat-adj">—</div>
+        </div>
+        <div class="legend">
+          <div class="legend-row"><div class="legend-dot" style="background:var(--rust-light);"></div>Demands</div>
+          <div class="legend-row"><div class="legend-dot" style="background:var(--gold-light);"></div>Practices</div>
+          <div class="legend-row"><div class="legend-dot" style="background:var(--forest-light);"></div>Moments</div>
+          <div style="font-size:0.72rem;margin-top:4px;line-height:1.4;">
+            Bubble size = number of distinct adjectives attached to the entity
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<div id="tip"></div>
+  <div class="analysis-block">
+    <h3>A note on "demanding"</h3>
+    The most common adjective in this vocabulary — "demanding" — functions less as description
+    than as moral permission. To call something demanding is to justify the cost of attending to it
+    and the guilt of not attending to it simultaneously. It is the day's equivalent of Marco Polo's
+    "great": a word that does not describe so much as it <em>authorizes</em>.
+    What an entity does <em>not</em> get called demanding is equally telling:
+    rest, dinner, the pause — never demanding, always at risk of being skipped.
+  </div>
+
+  <!-- ── SECTION II ── -->
+  <div class="section-label">
+    <span class="section-num">II.</span>
+    <div><div class="section-title">The Architecture of Description</div></div>
+  </div>
+  <p class="section-desc">
+    The adjectives of overwhelm are not random — they cluster into six ideological vocabularies.
+    Click any cluster to see which entities it dominates and why that dominance matters.
+  </p>
+
+  <div class="panel">
+    <div class="cluster-grid" id="cluster-cards"></div>
+
+    <div class="two-col">
+      <div class="inner-panel">
+        <div class="inner-panel-title">Top adjectives by frequency across all entities</div>
+        <div id="freq-bars"></div>
+      </div>
+      <div class="inner-panel">
+        <div class="inner-panel-title">Cluster weight by entity type</div>
+        <div id="heatmap-header" class="heat-header-row">
+          <div style="min-width:66px;"></div>
+        </div>
+        <div id="heatmap"></div>
+      </div>
+    </div>
+
+    <div class="detail-panel" id="cluster-detail-panel">
+      <div style="font-size:0.85rem;font-style:italic;color:var(--ink-light);">
+        Click a cluster above to see which entities anchor it
+      </div>
+    </div>
+  </div>
+
+  <div class="analysis-block">
+    <h3>Moral asymmetry: demands vs. moments</h3>
+    Strain and pressure in this vocabulary attach almost exclusively to <em>demands</em> —
+    work, school, the inbox, the deadline — and to the self that encounters them.
+    Moments, by contrast, are not strained; they are <em>lost, blurred, fast, brief</em>.
+    This asymmetry is not neutral. Moral failure is personalized onto the self and its demands;
+    temporal difficulty is naturalized into the day itself. The implication:
+    you can fail work, but you cannot fail time — time simply passes.
+  </div>
+
+  <div class="analysis-block">
+    <h3>The vocabulary of rest</h3>
+    Rest, dinner, and the pause cluster almost entirely in Virtue and Presence —
+    "wise," "gentle," "grounded," "present," "necessary."
+    This is the same cluster Marco Polo reserved for Christian rulers and loyal companions.
+    That rest requires <em>virtue</em> to justify it — that it must be earned, wise,
+    or necessary — reveals the deeper structure of the vocabulary: leisure is not
+    a default but an argument you make to yourself.
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-left">
+    The Architecture of a Day &bull; A linguistic analysis of modern overwhelm<br>
+    Built with D3.js &bull; Inspired by the methodology of the Marco Polo Name Analysis
+  </div>
+  <div class="footer-right">What we call the day<br>determines what we ask of ourselves</div>
+</footer>
+
+<div id="tooltip"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
 <script>
 
 // ── BREATHING BACKGROUND ─────────────────────────────────────────────
-const canvas = document.getElementById('bg');
-const ctx    = canvas.getContext('2d');
-let bPhase = 0, bTime = 0, bLast = null;
-const B_DUR = 4; // seconds per phase
+(function() {
+  const canvas = document.getElementById('bg-canvas');
+  const ctx    = canvas.getContext('2d');
+  let phase = 0, pt = 0, last = null;
+  const DUR = 4;
 
-function resize() { canvas.width = innerWidth; canvas.height = innerHeight; }
-resize();
-addEventListener('resize', resize);
+  function resize() { canvas.width = innerWidth; canvas.height = innerHeight; }
+  resize();
+  addEventListener('resize', resize);
 
-function ease(t) { return t < 0.5 ? 2*t*t : -1+(4-2*t)*t; }
+  function ease(t) { return t < 0.5 ? 2*t*t : -1+(4-2*t)*t; }
 
-function drawBg(ts) {
-  if (!bLast) bLast = ts;
-  const dt = Math.min((ts - bLast)/1000, 0.1);
-  bLast = ts;
-  bTime += dt;
-  if (bTime >= B_DUR) { bTime -= B_DUR; bPhase = (bPhase+1)%4; }
+  function frame(ts) {
+    if (!last) last = ts;
+    const dt = Math.min((ts-last)/1000, 0.08);
+    last = ts;
+    pt += dt;
+    if (pt >= DUR) { pt -= DUR; phase = (phase+1)%4; }
 
-  const t  = bTime / B_DUR;
-  const W  = canvas.width, H = canvas.height;
-  const base = Math.min(W, H);
-  const minR = base * 0.10, maxR = base * 0.22;
+    const t    = pt / DUR;
+    const W    = canvas.width, H = canvas.height;
+    const base = Math.min(W, H);
+    const minR = base * 0.11, maxR = base * 0.23;
 
-  let r;
-  if      (bPhase===0) r = minR + (maxR-minR)*ease(t);
-  else if (bPhase===1) r = maxR;
-  else if (bPhase===2) r = maxR - (maxR-minR)*ease(t);
-  else                 r = minR;
+    let r;
+    if      (phase===0) r = minR + (maxR-minR)*ease(t);
+    else if (phase===1) r = maxR;
+    else if (phase===2) r = maxR - (maxR-minR)*ease(t);
+    else                r = minR;
 
-  // More visible on open/end stages, subtle during narrative
-  const onEdge = (activeStage==='stage-open' || activeStage==='stage-end');
-  const a = onEdge ? 0.13 : 0.06;
-
-  ctx.clearRect(0,0,W,H);
-  for (let i=7; i>=1; i--) {
+    ctx.clearRect(0,0,W,H);
+    for (let i=7; i>=1; i--) {
+      ctx.beginPath();
+      ctx.arc(W/2, H/2, r + i*base*0.022, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(100,80,130,${((8-i)/8)*0.038})`;
+      ctx.fill();
+    }
     ctx.beginPath();
-    ctx.arc(W/2, H/2, r + i*base*0.025, 0, Math.PI*2);
-    ctx.fillStyle = `rgba(100,120,160,${((8-i)/8)*a*0.55})`;
-    ctx.fill();
-  }
-  ctx.beginPath();
-  ctx.arc(W/2, H/2, r, 0, Math.PI*2);
-  ctx.fillStyle  = `rgba(110,130,170,${a*0.55})`;
-  ctx.strokeStyle= `rgba(160,180,215,${a})`;
-  ctx.lineWidth  = 0.9;
-  ctx.fill(); ctx.stroke();
+    ctx.arc(W/2, H/2, r, 0, Math.PI*2);
+    ctx.fillStyle   = 'rgba(110,85,140,0.038)';
+    ctx.strokeStyle = 'rgba(150,120,180,0.055)';
+    ctx.lineWidth   = 0.8;
+    ctx.fill(); ctx.stroke();
 
-  requestAnimationFrame(drawBg);
-}
-requestAnimationFrame(drawBg);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
 
 
 // ── DATA ─────────────────────────────────────────────────────────────
-const CLUSTERS = {
-  power:     { label:'Power & Drive',       color:'#c05040' },
-  virtue:    { label:'Virtue & Character',  color:'#4a9a3a' },
-  vice:      { label:'Pressure & Strain',   color:'#848080' },
-  abundance: { label:'Output & Richness',   color:'#c4a030' },
-  scale:     { label:'Scale & Distance',    color:'#4a6a9a' },
-  aesthetic: { label:'Presence & Feeling',  color:'#9a5aaa' },
-};
+const ALL_DATA = [
+  // Demands — external forces that claim your time and attention
+  {name:"Work",           type:"demand",   adjectives:["relentless","rewarding","necessary","demanding","consuming","driven","structured","expansive","draining"]},
+  {name:"School",         type:"demand",   adjectives:["dutiful","ambitious","demanding","structured","anxious","stimulating","necessary","committed","overwhelming"]},
+  {name:"The Inbox",      type:"demand",   adjectives:["urgent","endless","intrusive","anxious","frantic","mundane","demanding","scattered"]},
+  {name:"The Deadline",   type:"demand",   adjectives:["relentless","demanding","approaching","clarifying","motivating","sharp","anxious","driving","necessary"]},
+  {name:"The Meeting",    type:"demand",   adjectives:["scheduled","draining","performed","necessary","vigilant","composed","social","prepared","demanding"]},
 
-// Each choice maps to 3 words with cluster tags
-const WORDS = {
-  work:       [{w:'driven',      c:'power'    }, {w:'productive',  c:'abundance'}, {w:'pressured',   c:'vice'     }],
-  school:     [{w:'diligent',    c:'virtue'   }, {w:'ambitious',   c:'power'    }, {w:'scattered',   c:'vice'     }],
-  project:    [{w:'focused',     c:'power'    }, {w:'creative',    c:'aesthetic'}, {w:'absorbed',    c:'scale'    }],
-  emails:     [{w:'responsive',  c:'virtue'   }, {w:'frantic',     c:'vice'     }, {w:'persistent',  c:'power'    }],
-  meeting:    [{w:'composed',    c:'virtue'   }, {w:'prepared',    c:'virtue'   }, {w:'vigilant',    c:'power'    }],
-  assignment: [{w:'faithful',    c:'virtue'   }, {w:'anxious',     c:'vice'     }, {w:'committed',   c:'virtue'   }],
-  reading:    [{w:'curious',     c:'aesthetic'}, {w:'thoughtful',  c:'virtue'   }, {w:'distant',     c:'scale'    }],
-  late:       [{w:'relentless',  c:'power'    }, {w:'exhausted',   c:'vice'     }, {w:'accomplished',c:'abundance'}],
-  rest:       [{w:'wise',        c:'virtue'   }, {w:'gentle',      c:'virtue'   }, {w:'aware',       c:'virtue'   }],
-  cook:       [{w:'grounded',    c:'aesthetic'}, {w:'present',     c:'virtue'   }, {w:'released',    c:'aesthetic'}],
-};
+  // Practices — active things you choose (or try) to do
+  {name:"The Project",    type:"practice", adjectives:["absorbing","creative","focused","delayed","rewarding","deep","relentless","driven","rich"]},
+  {name:"The Assignment", type:"practice", adjectives:["faithful","committed","anxious","overdue","necessary","dutiful","demanding","narrow"]},
+  {name:"The Reading",    type:"practice", adjectives:["slow","curious","meditative","distant","thoughtful","quiet","absorbing","rich"]},
+  {name:"Late Work",      type:"practice", adjectives:["relentless","accomplished","exhausted","quiet","solitary","driven","earned","dark"]},
+  {name:"Rest",           type:"practice", adjectives:["wise","necessary","brief","hard-won","gentle","guilty","slow","aware","earned"]},
+  {name:"Dinner",         type:"practice", adjectives:["grounded","present","simple","releasing","sensory","brief","restorative","gentle"]},
 
-const NOTES = {
-  power: {
-    h: 'The vocabulary of power',
-    p: 'Your day is described in the language of force and agency — driven, focused, relentless. Marco Polo used the same vocabulary for rulers and conquerors. When we apply it to ourselves, we reveal how we understand effort: as a kind of dominance over the day, over distraction, over our own limits. What a name does not receive is equally telling. To not be described as powerful, in this vocabulary, is to have failed.'
-  },
-  virtue: {
-    h: 'The vocabulary of virtue',
-    p: 'You narrated your day through character — faithful, wise, composed, gentle. This is the vocabulary Marco Polo reserved for Christian rulers and loyal companions. Applied to a Tuesday, it suggests that how you spent your hours carries moral weight: that a good day and a good person are the same claim. The distinction is not neutral. It means your rest is as much a moral act as your productivity.'
-  },
-  vice: {
-    h: 'The vocabulary of strain',
-    p: 'Scattered, frantic, pressured, exhausted — the words that attach to your day are words Marco Polo attached to adversaries and fallen places. Their presence here is not a judgment. It is a map of where the day put its pressure on you, and what language you reached for when it did. In his text, vice clustered around people, never landscapes. Difficulty was personalized. Your day\'s language does the same thing to yourself.'
-  },
-  abundance: {
-    h: 'The vocabulary of abundance',
-    p: 'Productive, creative, accomplished — your day\'s vocabulary clusters around output and richness. Marco Polo used these words for great trading cities, for places worth the journey. You used them for a single day\'s work. The implication is that a day\'s worth is measured in what it produced — that you are, as he was, a traveler assessing the value of a port before deciding whether to stay.'
-  },
-  scale: {
-    h: 'The vocabulary of scale',
-    p: 'Absorbed, distant, vast — your day\'s language reaches for size and depth. In Marco Polo, scale described kingdoms and wilderness: territories that dwarfed the traveler. When you use these words for your own experience, you are describing yourself as someone inside something large, not someone in control of it. Scale, in his text, was always the precondition for awe. Here it is the precondition for feeling lost.'
-  },
-  aesthetic: {
-    h: 'The vocabulary of presence',
-    p: 'Curious, grounded, present, released — your day ends in felt experience rather than measurable output. Marco Polo\'s aesthetic vocabulary appeared in descriptions of beauty and strangeness, things that arrested the traveler\'s motion. Your day, at least in how you told it, ends the same way: by stopping long enough to notice. In his text, these were the words attached to places that made him linger. You lingered too.'
-  },
-};
+  // Moments — periods and transitions that are experienced, not chosen
+  {name:"The Morning",    type:"moment",   adjectives:["frantic","hopeful","rushed","scattered","brief","dark","demanding","loud"]},
+  {name:"The Afternoon",  type:"moment",   adjectives:["lost","fast","unfinished","blurred","restless","exhausting","draining","squandered"]},
+  {name:"The Evening",    type:"moment",   adjectives:["quiet","brief","hard-won","slow","tired","gentle","released","earned","dark"]},
+  {name:"The Interruption",type:"moment",  adjectives:["frantic","urgent","intrusive","demanding","scattered","anxious","disruptive","necessary"]},
+  {name:"The Pause",      type:"moment",   adjectives:["stolen","brief","necessary","quiet","grounded","restorative","small","present"]},
+];
+
+const CLUSTERS = [
+  { id:"drive",    label:"Drive & Agency",
+    words:["relentless","driven","ambitious","persistent","vigilant","focused","demanding","consuming","clarifying","sharp","structured","motivated","earned","accomplished","driving"],
+    color:"#b84838", bg:"#b8483820", txt:"#c05040" },
+  { id:"virtue",   label:"Virtue & Character",
+    words:["faithful","committed","composed","wise","dutiful","gentle","present","thoughtful","necessary","aware","prepared","social","honest","meditative","restorative"],
+    color:"#3a8a2a", bg:"#3a8a2a20", txt:"#58a840" },
+  { id:"strain",   label:"Pressure & Strain",
+    words:["frantic","anxious","scattered","exhausted","drained","overwhelming","intrusive","rushed","draining","guilty","squandered","restless","blurred","narrow","disruptive","overdue","performed"],
+    color:"#706870", bg:"#70687020", txt:"#909090" },
+  { id:"worth",    label:"Output & Worth",
+    words:["accomplished","rewarding","creative","absorbing","stimulating","rich","deep","expansive","productive","sensory","releasing","slow"],
+    color:"#b89428", bg:"#b8942820", txt:"#d4b040" },
+  { id:"scale",    label:"Scale & Time",
+    words:["endless","fast","lost","distant","brief","unfinished","blurred","small","stolen","approaching","delayed","broad","solitary","squandered","loud","dark"],
+    color:"#3a5a8a", bg:"#3a5a8a20", txt:"#5878a8" },
+  { id:"presence", label:"Presence & Feeling",
+    words:["grounded","quiet","released","hopeful","curious","meditative","simple","present","hard-won","tired","gentle","earned","bright","warm"],
+    color:"#8a4a9a", bg:"#8a4a9a20", txt:"#aa6aba" },
+];
 
 
 // ── STATE ─────────────────────────────────────────────────────────────
-let activeStage = 'stage-open';
-let collected   = [];  // [{w, c}, ...]
+let allData      = JSON.parse(JSON.stringify(ALL_DATA));
+let filteredData = [...allData];
+let currentFilter= 'all';
+let simulation   = null;
+let selectedName = null;
+let selectedCluster = null;
 
-function go(id) {
-  const prev = document.getElementById(activeStage);
-  if (prev) { prev.classList.remove('visible'); }
+// ── TYPE META ─────────────────────────────────────────────────────────
+const TYPE_COLOR = { demand:'#b84838',   practice:'#b89428',   moment:'#3a8a2a'   };
+const TYPE_FILL  = { demand:'#d06858',   practice:'#d4b040',   moment:'#58a840'   };
+const TYPE_LABEL = { demand:'Demand',    practice:'Practice',  moment:'Moment'    };
+const TYPE_BG    = { demand:'#b8483820', practice:'#b8942820', moment:'#3a8a2a20' };
+const TYPE_TXT   = { demand:'#c05040',   practice:'#c4a030',   moment:'#3a9a2a'   };
 
-  activeStage = id;
-  const el = document.getElementById(id);
-  el.style.display = 'flex';
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-
-  setTimeout(() => el.classList.add('visible'), 30);
-
-  if (prev) {
-    setTimeout(() => {
-      prev.classList.remove('active');
-      prev.style.display = 'none';
-    }, 880);
-  }
-  el.classList.add('active');
+// ── STATS ─────────────────────────────────────────────────────────────
+function updateStats() {
+  document.getElementById('stat-names').textContent = allData.length;
+  const uniq = new Set(allData.flatMap(d => d.adjectives)).size;
+  document.getElementById('stat-adj').textContent   = uniq;
 }
 
-function pick(key, next) {
-  const words = WORDS[key] || [];
-  collected = collected.concat(words);
-  if (next === 'stage-end') buildAnalysis();
-  go(next);
+// ── FILTER ────────────────────────────────────────────────────────────
+function setFilter(f) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.filter === f));
+  applyFilter();
 }
-
-function restart() {
-  collected = [];
-  go('stage-open');
-}
-
-
-// ── ANALYSIS ─────────────────────────────────────────────────────────
-function buildAnalysis() {
-  // Word pills
-  const pillWrap = document.getElementById('word-pills');
-  pillWrap.innerHTML = '';
-  collected.forEach(({w, c}) => {
-    const col = CLUSTERS[c].color;
-    const span = document.createElement('span');
-    span.className = 'pill';
-    span.textContent = w;
-    span.style.cssText = `background:${col}1a; color:${col}; border:1px solid ${col}33;`;
-    pillWrap.appendChild(span);
+function handleSearch(val) { applyFilter(val); }
+function applyFilter(searchVal) {
+  const q = (searchVal !== undefined ? searchVal
+    : document.getElementById('search').value).toLowerCase().trim();
+  filteredData = allData.filter(d => {
+    const typeOk = currentFilter === 'all' || d.type === currentFilter;
+    const nameOk = !q || d.name.toLowerCase().includes(q);
+    return typeOk && nameOk;
   });
-
-  // Legend — only clusters present
-  const present = [...new Set(collected.map(d => d.c))];
-  document.getElementById('legend').innerHTML = present.map(c =>
-    `<div class="leg-item">
-      <div class="leg-dot" style="background:${CLUSTERS[c].color};"></div>
-      ${CLUSTERS[c].label}
-    </div>`
-  ).join('');
-
-  // Dominant cluster for analysis note
-  const counts = {};
-  collected.forEach(({c}) => counts[c] = (counts[c]||0) + 1);
-  const dominant = Object.entries(counts).sort((a,b)=>b[1]-a[1])[0][0];
-  const note = NOTES[dominant];
-  document.getElementById('analysis-note').innerHTML =
-    `<h3>${note.h}</h3><p>${note.p}</p>`;
-
-  // D3
-  renderViz();
+  renderViz(filteredData);
 }
 
-function renderViz() {
-  const svg = d3.select('#viz-svg');
+// ── VIZ ───────────────────────────────────────────────────────────────
+function renderViz(data) {
+  const svg  = d3.select('#viz-svg');
   svg.selectAll('*').remove();
-
-  const W = document.getElementById('viz-wrap').clientWidth || 600;
-  const H = 320;
+  const wrap = document.getElementById('chart-wrap');
+  const W    = wrap.clientWidth || 540;
+  const H    = 460;
   svg.attr('viewBox', `0 0 ${W} ${H}`).attr('width', W).attr('height', H);
+  if (!data.length) return;
 
-  const nodes = collected.map((d, i) => ({ ...d, r: 36, id: d.w + i }));
-  const tip   = document.getElementById('tip');
+  const maxA   = d3.max(data, d => d.adjectives.length);
+  const minA   = d3.min(data, d => d.adjectives.length);
+  const rScale = d3.scaleSqrt()
+    .domain([minA, Math.max(maxA, minA+1)]).range([18, 54]);
+  const nodes  = data.map(d => ({ ...d, r: rScale(d.adjectives.length) }));
 
-  const sim = d3.forceSimulation(nodes)
-    .force('center',    d3.forceCenter(W/2, H/2).strength(0.06))
-    .force('charge',    d3.forceManyBody().strength(-10))
-    .force('collision', d3.forceCollide(d => d.r + 5).strength(0.88))
-    .alphaDecay(0.02);
+  if (simulation) simulation.stop();
+  simulation = d3.forceSimulation(nodes)
+    .force('center',    d3.forceCenter(W/2, H/2).strength(0.04))
+    .force('charge',    d3.forceManyBody().strength(-18))
+    .force('collision', d3.forceCollide(d => d.r + 3.5).strength(0.85))
+    .alphaDecay(0.018);
 
-  const node = svg.selectAll('.n').data(nodes, d => d.id)
+  const tooltip = document.getElementById('tooltip');
+
+  const node = svg.selectAll('.node').data(nodes, d => d.name)
     .join(enter => {
-      const g = enter.append('g').attr('opacity', 0);
+      const g = enter.append('g').attr('class','node')
+        .style('cursor','pointer').attr('opacity',0);
 
       g.append('circle')
-        .attr('r',            d => d.r)
-        .attr('fill',         d => CLUSTERS[d.c].color + '1a')
-        .attr('stroke',       d => CLUSTERS[d.c].color)
-        .attr('stroke-width', 0.9)
-        .attr('stroke-opacity', 0.75);
+        .attr('r',             d => d.r)
+        .attr('fill',          d => TYPE_FILL[d.type] + '28')
+        .attr('stroke',        d => TYPE_COLOR[d.type])
+        .attr('stroke-width',  1.2)
+        .attr('stroke-opacity',0.6);
 
-      g.append('text')
-        .attr('text-anchor', 'middle').attr('dy', '0.35em')
-        .attr('font-size',   d => Math.max(9, Math.min(d.r*0.38, 13)))
-        .attr('fill',        d => CLUSTERS[d.c].color)
-        .attr('font-family', "'Crimson Text', serif")
-        .attr('font-style',  'italic')
-        .attr('pointer-events', 'none')
-        .text(d => d.w);
+      g.each(function(d) {
+        const el    = d3.select(this);
+        const words = d.name.replace('The ','').split(' ');
+        const fs    = Math.max(7.5, Math.min(d.r * 0.34, 12));
+        if (words.length >= 2 && d.r > 26) {
+          el.append('text').attr('text-anchor','middle').attr('dy','-0.3em')
+            .attr('font-size', fs).attr('fill', TYPE_COLOR[d.type])
+            .attr('font-family',"'Crimson Text',serif").attr('font-style','italic')
+            .attr('pointer-events','none').text(words[0]);
+          el.append('text').attr('text-anchor','middle').attr('dy','0.9em')
+            .attr('font-size', fs*0.88).attr('fill', TYPE_COLOR[d.type])
+            .attr('font-family',"'Crimson Text',serif").attr('font-style','italic')
+            .attr('pointer-events','none').text(words.slice(1).join(' '));
+        } else {
+          el.append('text').attr('text-anchor','middle').attr('dy','0.35em')
+            .attr('font-size', fs).attr('fill', TYPE_COLOR[d.type])
+            .attr('font-family',"'Crimson Text',serif").attr('font-style','italic')
+            .attr('pointer-events','none')
+            .text(d.name.length > 14 ? d.name.slice(0,13)+'…' : d.name);
+        }
+        el.append('text').attr('text-anchor','middle')
+          .attr('dy', words.length >= 2 && d.r > 26 ? '2.1em' : '1.65em')
+          .attr('font-size', 7.5).attr('fill', TYPE_COLOR[d.type])
+          .attr('fill-opacity', 0.5).attr('pointer-events','none')
+          .attr('font-family',"'Crimson Text',serif").attr('font-style','italic')
+          .text(d.adjectives.length + ' adj.');
+      });
 
-      g.on('mouseenter', (e, d) => {
-          tip.style.display = 'block';
-          tip.style.left    = (e.clientX + 14) + 'px';
-          tip.style.top     = (e.clientY - 8)  + 'px';
-          tip.innerHTML     = `<strong>${d.w}</strong><br>${CLUSTERS[d.c].label}`;
+      g.on('click', (e,d) => showDetail(d))
+       .on('mouseenter', (e,d) => {
+          tooltip.style.display = 'block';
+          tooltip.style.left = (e.clientX+14)+'px';
+          tooltip.style.top  = (e.clientY-8) +'px';
+          tooltip.innerHTML  =
+            `<strong>${d.name}</strong><br>${d.adjectives.slice(0,5).join(', ')}${d.adjectives.length>5?'…':''}`;
           d3.select(e.currentTarget).select('circle')
-            .attr('fill', CLUSTERS[d.c].color + '33');
+            .attr('fill-opacity',0.38).attr('stroke-width',2);
         })
-        .on('mouseleave', (e, d) => {
-          tip.style.display = 'none';
+       .on('mouseleave', (e,d) => {
+          tooltip.style.display = 'none';
           d3.select(e.currentTarget).select('circle')
-            .attr('fill', CLUSTERS[d.c].color + '1a');
+            .attr('fill-opacity', d.name===selectedName ? 0.42 : 0.15)
+            .attr('stroke-width', d.name===selectedName ? 2    : 1.2);
         });
 
-      g.transition().duration(500).delay((_,i) => i*55).attr('opacity',1);
+      g.transition().duration(500).delay((_,i) => i*22).attr('opacity',1);
       return g;
     });
 
-  sim.on('tick', () => {
+  simulation.on('tick', () => {
     node.attr('transform', d => {
       const x = Math.max(d.r+3, Math.min(W-d.r-3, d.x));
       const y = Math.max(d.r+3, Math.min(H-d.r-3, d.y));
@@ -568,12 +778,213 @@ function renderViz() {
   });
 }
 
-addEventListener('resize', () => {
-  if (activeStage === 'stage-end') renderViz();
+function showDetail(d) {
+  selectedName = d.name;
+  document.getElementById('detail-placeholder').style.display = 'none';
+  const panel = document.getElementById('detail-content');
+  panel.style.display = 'block';
+  panel.innerHTML = `
+    <div style="margin-bottom:10px;">
+      <div style="font-family:'Playfair Display',serif;font-size:1rem;font-style:italic;
+                  color:var(--ink);margin-bottom:4px;">${d.name}</div>
+      <span style="font-size:0.7rem;padding:2px 7px;
+                   background:${TYPE_BG[d.type]};color:${TYPE_TXT[d.type]};">
+        ${TYPE_LABEL[d.type]}
+      </span>
+    </div>
+    <div style="font-size:0.75rem;color:var(--ink-light);font-style:italic;margin-bottom:8px;">
+      ${d.adjectives.length} descriptor${d.adjectives.length!==1?'s':''} found
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:3px;">
+      ${d.adjectives.sort().map(adj =>
+        `<span style="font-size:0.68rem;padding:2px 7px;border-radius:1px;
+                      background:${TYPE_BG[d.type]};color:${TYPE_TXT[d.type]};
+                      font-style:italic;">${adj}</span>`
+      ).join('')}
+    </div>`;
+
+  d3.select('#viz-svg').selectAll('.node circle')
+    .attr('fill-opacity',  nd => nd.name===d.name ? 0.42 : 0.08)
+    .attr('stroke-width',  nd => nd.name===d.name ? 2    : 0.8);
+}
+
+// ── CLUSTER ANALYSIS ──────────────────────────────────────────────────
+function scoreCluster(adjectives, cluster) {
+  return adjectives.filter(a => cluster.words.includes(a.toLowerCase())).length;
+}
+function buildFrequencyMap() {
+  const freq = {};
+  ALL_DATA.forEach(d => d.adjectives.forEach(a => { freq[a] = (freq[a]||0)+1; }));
+  return freq;
+}
+function buildClusterScores() {
+  const types  = ['demand','practice','moment'];
+  const scores = {};
+  types.forEach(t => {
+    scores[t] = {};
+    CLUSTERS.forEach(c => { scores[t][c.id] = 0; });
+    ALL_DATA.filter(d => d.type===t).forEach(d => {
+      CLUSTERS.forEach(c => { scores[t][c.id] += scoreCluster(d.adjectives, c); });
+    });
+  });
+  return scores;
+}
+function buildClusterNameMap() {
+  const map = {};
+  CLUSTERS.forEach(c => {
+    map[c.id] = ALL_DATA.map(d => ({
+      name:    d.name, type: d.type,
+      count:   scoreCluster(d.adjectives, c),
+      matches: d.adjectives.filter(a => c.words.includes(a.toLowerCase()))
+    })).filter(x => x.count>0).sort((a,b)=>b.count-a.count).slice(0,8);
+  });
+  return map;
+}
+
+const freqMap        = buildFrequencyMap();
+const clusterScores  = buildClusterScores();
+const clusterNameMap = buildClusterNameMap();
+
+function renderClusterCards() {
+  const container = document.getElementById('cluster-cards');
+  container.innerHTML = '';
+  CLUSTERS.forEach(c => {
+    const total = ALL_DATA.reduce((s,d) => s+scoreCluster(d.adjectives,c), 0);
+    const div   = document.createElement('div');
+    div.className = 'cluster-card' + (selectedCluster===c.id ? ' selected' : '');
+    div.style.borderColor = selectedCluster===c.id ? c.color : '';
+    div.innerHTML = `
+      <div class="cluster-name" style="color:${c.txt};">${c.label}</div>
+      <div class="cluster-count">${total}</div>
+      <div class="cluster-sub">occurrences</div>
+      <div class="cluster-pills">
+        ${c.words.slice(0,4).map(w =>
+          `<span class="cluster-pill"
+                 style="background:${c.bg};color:${c.txt};">${w}</span>`
+        ).join('')}
+      </div>`;
+    div.onclick = () => {
+      selectedCluster = selectedCluster===c.id ? null : c.id;
+      renderClusterCards();
+      renderClusterDetail();
+    };
+    container.appendChild(div);
+  });
+}
+
+function renderFreqBars() {
+  const sorted = Object.entries(freqMap).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  const max    = sorted[0][1];
+  const WCOLOR = {
+    relentless:'#b84838', demanding:'#b84838', necessary:'#3a8a2a',
+    anxious:'#706870',    draining:'#706870',  brief:'#3a5a8a',
+    quiet:'#8a4a9a',      driven:'#b84838',    earned:'#b89428',
+    gentle:'#3a8a2a'
+  };
+  document.getElementById('freq-bars').innerHTML = sorted.map(([word,count]) => {
+    const col = WCOLOR[word] || '#5a5048';
+    const pct = Math.round((count/max)*100);
+    return `<div class="freq-row">
+      <span class="freq-word">${word}</span>
+      <div class="freq-track">
+        <div class="freq-fill" style="width:${pct}%;background:${col};"></div>
+      </div>
+      <span class="freq-count">${count}</span>
+    </div>`;
+  }).join('');
+}
+
+function renderHeatmap() {
+  const types    = [{key:'demand',label:'Demands'},{key:'practice',label:'Practices'},{key:'moment',label:'Moments'}];
+  const headerEl = document.getElementById('heatmap-header');
+  headerEl.innerHTML = `<div style="min-width:66px;"></div>` +
+    CLUSTERS.map(c =>
+      `<div class="heat-col-label" style="color:${c.txt};">${c.label.split(' ')[0]}</div>`
+    ).join('');
+
+  const container = document.getElementById('heatmap');
+  container.innerHTML = types.map(t => {
+    const vals   = CLUSTERS.map(c => clusterScores[t.key][c.id]);
+    const rowMax = Math.max(...vals);
+    return `<div class="heat-row">
+      <div class="heat-type-label">${t.label}</div>
+      ${CLUSTERS.map((c,i) => {
+        const v     = vals[i];
+        const alpha = rowMax>0 ? 0.10+(v/rowMax)*0.80 : 0.08;
+        const [r,g,b] = [
+          parseInt(c.color.slice(1,3),16),
+          parseInt(c.color.slice(3,5),16),
+          parseInt(c.color.slice(5,7),16)
+        ];
+        const textCol = alpha>0.45 ? c.txt : '#5a5048';
+        return `<div class="heat-cell"
+                     style="background:rgba(${r},${g},${b},${alpha.toFixed(2)});
+                            color:${textCol};">${v}</div>`;
+      }).join('')}
+    </div>`;
+  }).join('');
+}
+
+function renderClusterDetail() {
+  const panel = document.getElementById('cluster-detail-panel');
+  if (!selectedCluster) {
+    panel.innerHTML = `<div style="font-size:0.85rem;font-style:italic;color:var(--ink-light);">
+      Click a cluster above to see which entities anchor it</div>`;
+    return;
+  }
+  const c     = CLUSTERS.find(x => x.id===selectedCluster);
+  const names = clusterNameMap[selectedCluster];
+  panel.innerHTML = `
+    <div class="detail-panel-title" style="color:${c.txt};">
+      ${c.label} — entities by cluster strength
+    </div>
+    <div class="name-cards-grid">
+      ${names.map(n => `
+        <div class="name-card">
+          <div class="name-card-title">${n.name}</div>
+          <div class="name-card-type" style="color:${TYPE_COLOR[n.type]};">
+            ${TYPE_LABEL[n.type]}
+          </div>
+          <div class="name-adj-pills">
+            ${n.matches.map(m =>
+              `<span class="name-adj-pill"
+                     style="background:${c.bg};color:${c.txt};">${m}</span>`
+            ).join('')}
+          </div>
+        </div>`).join('')}
+    </div>`;
+}
+
+// ── LOADING + INIT ────────────────────────────────────────────────────
+const LOAD_MSGS = [
+  "Sorting through the day…",
+  "Cataloguing the demands…",
+  "Mapping the afternoon…",
+  "Counting what was left undone…"
+];
+let msgIdx = 0;
+const msgEl  = document.getElementById('load-msg');
+const msgInt = setInterval(() => {
+  msgIdx = (msgIdx+1) % LOAD_MSGS.length;
+  msgEl.textContent = LOAD_MSGS[msgIdx];
+}, 1800);
+
+window.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => {
+    clearInterval(msgInt);
+    document.getElementById('loading-overlay').style.display = 'none';
+    updateStats();
+    applyFilter();
+    renderClusterCards();
+    renderFreqBars();
+    renderHeatmap();
+    renderClusterDetail();
+  }, 900);
 });
 
-// ── INIT ─────────────────────────────────────────────────────────────
-go('stage-open');
+window.addEventListener('resize', () => {
+  if (filteredData.length) renderViz(filteredData);
+});
 </script>
 </body>
 </html>
